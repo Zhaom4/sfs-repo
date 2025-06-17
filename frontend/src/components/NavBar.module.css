@@ -1,0 +1,52 @@
+:root{
+  --black: rgb(18, 18, 18);
+}
+
+.navBar{
+  background-color: rgb(18, 18, 18);
+  color: #a7a7a9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 1.5rem;
+  font-family: general sans;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.navBar .left{
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.navBar .right{
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.profile-icon {
+  all: unset;
+  display: inline-block;
+  height: 2.3rem;
+  width: 2.3rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-image: url("icon.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+
+.profile-icon:focus{
+  outline: none;
+  box-shadow: none;
+}

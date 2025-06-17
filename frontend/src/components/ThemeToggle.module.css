@@ -1,0 +1,26 @@
+.theme-toggle {
+  background-color: #1a1a1f;
+  padding: 4px;
+  display: flex;
+  gap: 4px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.theme-button {
+  background: transparent;
+  border: none;
+  color: #cfcfe4;
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-button.active {
+  background-color: #2e2e42;
+}
