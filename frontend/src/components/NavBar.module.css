@@ -20,6 +20,20 @@
   z-index: 2;
 }
 
+.nav-btn{
+  font-family: inter;
+  background: none;
+  border: none;
+  color: #a7a7a9;
+  transition: all 0.3s ease;
+}
+
+.nav-btn.active{
+  color: #e2e2f9;
+  
+}
+
+
 .navBar .left{
   font-weight: 700;
   font-size: 1.3rem;

@@ -49,10 +49,11 @@ function WelcomePage() {
       scrollTrigger: {
         trigger: section1Ref.current,
         start: "top top",
-        end: "bottom top",
+        end: "top bottom",
         scrub: 1,
         pin: section1Ref.current,
-        pinSpacing: false
+        pinSpacing: true,
+        markers: true
       }
     });
     
