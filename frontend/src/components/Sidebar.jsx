@@ -6,6 +6,7 @@ import clsx from "clsx";
 
 
 const categories = ["Math", "Science", "STEM", "Arts", "AP Exams", "Languages", "History"];
+const sortBy = ["popular", "latest", "grade"]
 
 
 function Sidebar() {
@@ -16,14 +17,15 @@ function Sidebar() {
   };
   return (
     <div className={styles["side-bar"]}>
-      <div className={styles["search-bar"]}>
+      {/* <div className={styles["search-bar"]}>
         <FaSearch className={styles["search-icon"]} />
         <input type="text" placeholder="Search" />
         <div className={styles["shortcut"]}>
           <span className={styles["key"]}>⌘</span>
           <span className={styles["key"]}>K</span>
         </div>
-      </div>
+      </div> */}
+
       <div className={styles["filter-section"]}>
         <h3>Filter by Category</h3>
         <div className={styles["category-list"]}>

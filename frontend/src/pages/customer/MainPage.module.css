@@ -3,33 +3,29 @@
 }
 
 body{
-  background-color: rgb(41, 41, 41) !important;
+  background-color: rgb(56, 55, 55) !important;
+}
+
+.container{
+  padding-top: 5.5rem;
+  padding-left: 230px;
 }
 
 .main-section{
-  padding-top: 5.5rem;
-  padding-left: 230px;
   padding-right: 30px;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
   flex-wrap: wrap;
   overflow-y: auto;
 }
 
-.course{
-  aspect-ratio: 2/1.3;
-  background-color: azure;
-  padding: 20px;
-  border-radius: 10px;
-  min-width: 250px;
+.courseWrapper{
+  all: unset;
 }
 
-
-.theme-button:focus{
-  outline: none;
-  box-shadow: none;
+.courseWrapper:hover{
+  cursor: pointer;
 }
-

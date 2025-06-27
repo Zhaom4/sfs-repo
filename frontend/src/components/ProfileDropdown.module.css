@@ -1,0 +1,40 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+  z-index: 100;
+}
+
+.dropdown {
+  position: absolute;
+  top: 2.5rem;
+  right: -2rem;
+  background-color: #434344;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  min-width: 200px;
+  padding: 0.5rem 0;
+  z-index: 1000;
+  transition: all 0.2s ease;
+  font-family: inter;
+}
+
+.item {
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: 400;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin: 0.4rem 0;
+}
