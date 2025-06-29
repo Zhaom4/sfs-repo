@@ -15,7 +15,7 @@ function Course({course}){
         style={{ backgroundImage: `url(${course.thumbnail})` }}
       >
         <div className={styles["figcaption"]}>
-          <p className={styles["fig-desc"]}>{course.desc2}</p>
+          <p className={styles["fig-desc"]}>{course.desc}</p>
           <button className={styles["favorite"]} onClick={toggleFavorite}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ function Course({course}){
       <div className={styles["bottom-desc"]}>
         <div className={styles.left}>
           <div className={styles["desc-container"]}>
-            <div className={styles["desc"]}>{course.desc.slice(0, -1)}</div>
+            <div className={styles["desc"]}>{course.title.slice(0, -1)}</div>
             {/* <div className={styles["date"]}>{course.date}</div> */}
           </div>
           <div className={styles["profile-section"]}>

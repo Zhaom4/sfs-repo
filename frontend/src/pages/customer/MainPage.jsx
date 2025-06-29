@@ -3,14 +3,19 @@ import styles from "../customer/MainPage.module.css";
 import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
 import { courses } from "../../services/api";
-import clsx from "clsx";
 import Course from "../../components/course";
+import { useNavigate } from "react-router-dom";
 
 function MainPage() {
   const [courseList, setCourseList] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     setCourseList(courses);
   }, []);
+
+  const handleClick = (id) => {
+    navigate(`/course/${id}`)
+  }
 
   return (
     <>
@@ -21,7 +26,10 @@ function MainPage() {
         <section className={styles["main-section"]}>
           {courseList.map((course) => {
             return (
-              <button className={styles.courseWrapper}>
+              <button className={styles.courseWrapper}
+              key={course.id}
+              onClick={() => handleClick(course.id)}
+              >
                 <Course course={course}/>
               </button>
             );
