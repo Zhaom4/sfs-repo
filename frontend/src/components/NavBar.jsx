@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import ProfileDropdown from './ProfileDropdown';
+import { Link, useNavigate } from 'react-router-dom';
 
 function NavBar(){
   const [activebtn, changeActivebtn] = useState('dashboard');
@@ -25,7 +26,9 @@ function NavBar(){
           </div>
         </div>
         <div className={styles["right"]}>
-          <button
+          <Link
+            style={{textDecoration: 'none'}}
+            to={'/mainpg'}
             className={clsx(
               styles["nav-btn"],
               activebtn === "dashboard" && styles["active"]
@@ -33,7 +36,7 @@ function NavBar(){
             onClick={() => handleClick("dashboard")}
           >
             dashboard
-          </button>
+          </Link>
           <button
             className={clsx(
               styles["nav-btn"],
@@ -43,7 +46,10 @@ function NavBar(){
           >
             my courses
           </button>
-          <button className={clsx(styles["favorites"], styles["nav-btn"])}>
+          <Link className={clsx(styles["favorites"], styles["nav-btn"])}
+          to={'/favorites'}
+          style={{textDecoration: `none`}}
+          >
             <svg
               className={clsx(
                 styles["favorites-svg"],
@@ -57,7 +63,7 @@ function NavBar(){
             >
               <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z" />
             </svg>
-          </button>
+          </Link>
           <button className={styles["profile-icon"]} onClick={()=>{setOpen(!open)}}>
               <ProfileDropdown open={open}></ProfileDropdown>
           </button>

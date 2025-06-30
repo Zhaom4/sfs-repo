@@ -1,4 +1,3 @@
-
 .course{
   all: unset;
   aspect-ratio: 2/1.5;
@@ -8,7 +7,17 @@
   flex-direction: column;
   justify-content: flex-start;
   height: 100%;
+  max-width: 600px;
   /* min-height: 300px; */
+}
+
+/* ADD THIS: Make sure the Link takes full height and maintains flex layout */
+.courseWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  flex: 1;
 }
 
 .course-thumbnail{
@@ -16,9 +25,10 @@
   width: 100%;
   height: 80%;
   background-position: center;
-  background-size:cover;
+  background-size: cover;
   margin-bottom: 10px;
   position: relative;
+  flex-shrink: 0; /* ADD THIS: Prevent thumbnail from shrinking */
 }
 
 .theme-button:focus{
@@ -33,6 +43,8 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+  flex: 1; /* ADD THIS: Allow bottom section to take remaining space */
+  align-items: flex-start; /* ADD THIS: Align content to top */
 }
 
 .desc{

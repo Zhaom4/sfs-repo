@@ -2,20 +2,16 @@ import NavBar from "../../components/NavBar";
 import styles from "../customer/MainPage.module.css";
 import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
-import { courses } from "../../services/api";
+import { courses } from "../../services/courses";
 import Course from "../../components/course";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"; // Use Link instead of useNavigate
 
 function MainPage() {
   const [courseList, setCourseList] = useState([]);
-  const navigate = useNavigate();
+  
   useEffect(() => {
     setCourseList(courses);
   }, []);
-
-  const handleClick = (id) => {
-    navigate(`/course/${id}`)
-  }
 
   return (
     <>
@@ -26,12 +22,7 @@ function MainPage() {
         <section className={styles["main-section"]}>
           {courseList.map((course) => {
             return (
-              <button className={styles.courseWrapper}
-              key={course.id}
-              onClick={() => handleClick(course.id)}
-              >
-                <Course course={course}/>
-              </button>
+                <Course key={course.id} course={course}/>
             );
           })}
         </section>

@@ -3,7 +3,7 @@ import styles from '../customer/CoursePage.module.css';
 import { useState } from "react";
 import { Heart, Play, Clock, Users, Star } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { courses } from "../../services/api";
+import { courses } from "../../services/courses";
 
 export default function CoursePage(){
   const {id} = useParams();

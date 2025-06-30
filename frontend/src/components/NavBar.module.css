@@ -28,6 +28,7 @@
   border: none;
   color: #a7a7a9;
   transition: all 0.3s ease;
+  font-size: 0.85rem;
 }
 
 .nav-btn:hover{
