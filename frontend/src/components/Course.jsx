@@ -3,13 +3,18 @@ import styles from '../components/Course.module.css'
 import { useEffect, useState } from "react";
 import { addToFavorites, removeFromFavorites, isFavorited } from "../services/api";
 import { Link } from "react-router-dom";
+import fetchAllCourses from "../services/wordpressapi";
+import { getThumbnailUrl } from "../services/wordpressapi";
 
-function Course({course, onFavoriteChange}){
+function Course({course, onFavoriteChange, ind}){
   const [favorite, changeFavorite] = useState(false);
+  const [thumbnail, setThumbnail] = useState('');
   
   useEffect(() => {
-    changeFavorite(isFavorited(course.id));
-  }, [course.id]);
+    changeFavorite(isFavorited(course.ID));
+    const url = getThumbnailUrl(course);
+    setThumbnail(url);
+  }, [course.ID]);
 
   function toggleFavorite(e){
     e.preventDefault();
@@ -17,10 +22,10 @@ function Course({course, onFavoriteChange}){
     
     // Check current state and update accordingly
     if (favorite){
-      removeFromFavorites(course.id); 
+      removeFromFavorites(course.ID); 
       changeFavorite(false); 
     } else{
-      addToFavorites(course.id); 
+      addToFavorites(course.ID); 
       changeFavorite(true); 
     }
     if (onFavoriteChange){
@@ -31,16 +36,16 @@ function Course({course, onFavoriteChange}){
   return (
     <div className={styles["course"]}>
       <Link 
-        to={`/course/${course.id}`}
+        to={`/course/${course.ID}`}
         className={styles.courseWrapper}
         style={{ textDecoration: 'none' }}
       >
         <div
           className={styles["course-thumbnail"]}
-          style={{ backgroundImage: `url(${course.thumbnail})` }}
+          style={{ backgroundImage: `url(${thumbnail})` }}
         >
           <div className={styles["figcaption"]}>
-            <p className={styles["fig-desc"]}>{course.desc}</p>
+            <p className={styles["fig-desc"]}>{course.modified}</p>
             <button 
               className={styles["favorite"]} 
               onClick={toggleFavorite}
@@ -64,7 +69,7 @@ function Course({course, onFavoriteChange}){
         <div className={styles["bottom-desc"]}>
           <div className={styles.left}>
             <div className={styles["desc-container"]}>
-              <div className={styles["desc"]}>{course.title.slice(0, -1)}</div>
+              <div className={styles["desc"]}>{}</div>
             </div>
             <div className={styles["profile-section"]}>
               <button className={styles["icon"]}></button>

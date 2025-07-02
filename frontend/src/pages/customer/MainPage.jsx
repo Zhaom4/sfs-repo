@@ -2,15 +2,23 @@ import NavBar from "../../components/NavBar";
 import styles from "../customer/MainPage.module.css";
 import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
-import { courses } from "../../services/courses";
+// import { courses } from "../../services/courses";
 import Course from "../../components/course";
-import { Link } from "react-router-dom"; // Use Link instead of useNavigate
+import fetchAllCourses from "../../services/wordpressapi";
 
 function MainPage() {
   const [courseList, setCourseList] = useState([]);
   
   useEffect(() => {
-    setCourseList(courses);
+    const fetchCourses = async() => {
+      const response = await fetchAllCourses();
+      if (response){
+        setCourseList(response.data.courses);
+        console.log(response);
+      }
+    }
+
+    fetchCourses();
   }, []);
 
   return (
@@ -21,8 +29,9 @@ function MainPage() {
         
         <section className={styles["main-section"]}>
           {courseList.map((course) => {
+            console.log(course);
             return (
-                <Course key={course.id} course={course}/>
+                <Course key={course.ID} course={course} ind={courseList.indexOf(course)}/>
             );
           })}
         </section>

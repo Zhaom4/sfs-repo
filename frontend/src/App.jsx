@@ -4,22 +4,22 @@ import MainPage from './pages/customer/MainPage'
 import { Routes, Route} from 'react-router-dom'
 import CoursePage from './pages/customer/CoursePage'
 import Favorites from './pages/customer/Favorites'
-import CourseSection from './pages/customer/CourseSection'
 import fetchAllCourses from './services/wordpressapi'
 import { useEffect, useState } from 'react'
+// import { fetchCoursesTest } from './services/wordpressapi'
 
+export const fetchCourses = async() => {
+        const results = await fetchAllCourses();
+        if (results){
+          return results;
+        } else{
+          return [];
+        }
+ }
 function App() {
     const [courses, setCourses] = useState([]);
     useEffect(()=>{
-      const fetchCourses = async() => {
-        const results = await fetchAllCourses();
-      if (results) {
-        setCourses(results);
-        console.log('Courses loaded:', results);
-      }
-      }
-
-      fetchCourses();
+      setCourses(fetchCourses());
     }, [])
   return (
     <>
@@ -30,7 +30,6 @@ function App() {
       <Route path='/mainpg' element={<MainPage/>}/>
       <Route path='/course/:id' element={<CoursePage/>}/>
       <Route path='/favorites' element={<Favorites/>}/>
-      <Route path='/course-section' element={<CourseSection/>}/>
     </Routes>
     </>
 
