@@ -3,11 +3,13 @@ import styles from '../customer/CoursePage.module.css';
 import { useState } from "react";
 import { Heart, Play, Clock, Users, Star } from "lucide-react";
 import { useParams } from "react-router-dom";
-import { courses } from "../../services/courses";
+// import { courses } from "../../services/courses";
+import { useCourses } from "../../contexts/CourseContext";
 
 export default function CoursePage(){
   const {id} = useParams();
-  const course = courses.find((c) => String(c.id) === id); // String match for safety
+  const {courseList, loading} = useCourses();
+  const course = courseList.find((c) => String(c.ID) === id); // String match for safety
   const [isFavorited, setIsFavorited] = useState(false);
   
   return (
@@ -35,7 +37,7 @@ export default function CoursePage(){
               </h1>
 
               <p className={styles.description}>
-                {course.desc}
+                {course.author}
               </p>
             </div>
 

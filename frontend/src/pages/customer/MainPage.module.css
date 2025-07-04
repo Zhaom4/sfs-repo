@@ -19,7 +19,7 @@ body{
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
   flex-wrap: wrap;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 
 .courseWrapper{

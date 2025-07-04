@@ -33,6 +33,42 @@ function Course({course, onFavoriteChange, ind}){
     }
   }
 
+  const getInstructorName = (htmlString) => {
+    const match = htmlString.match(/<span class="instructor-display-name">(.*?)<\/span>/);
+    return match ? match[1] : 'Unknown Instructor';
+  };
+
+  const getPrice = (htmlString) => {
+    const priceMatch = htmlString.match(/<span class="price">(.*?)<\/span>/);
+    if (priceMatch) {
+      return priceMatch[1].replace(/&#036;/g, "$").trim();
+    }
+
+    const originalMatch = htmlString.match(
+      /<span class="origin-price">(.*?)<\/span>/
+    );
+    if (originalMatch) {
+      return originalMatch[1].replace(/&#036;/g, "$").trim();
+    }
+
+    return "Free";
+  };
+
+  const getThumbnail = (htmlString) => {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlString;
+
+    const imgElement = tempDiv.querySelector('img');
+    const imgUrl = imgElement ? imgElement.src : null;
+    return imgUrl;
+  }
+
+  const decodeHtmlEntities = (text) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, "text/html");
+    return doc.documentElement.textContent;
+  };
+
   return (
     <div className={styles["course"]}>
       <Link 
@@ -42,10 +78,10 @@ function Course({course, onFavoriteChange, ind}){
       >
         <div
           className={styles["course-thumbnail"]}
-          style={{ backgroundImage: `url(${thumbnail})` }}
+          style={{ backgroundImage: `url(${getThumbnail(course.image)})` }}
         >
           <div className={styles["figcaption"]}>
-            <p className={styles["fig-desc"]}>{course.modified}</p>
+            <p className={styles["fig-desc"]}>{}</p>
             <button 
               className={styles["favorite"]} 
               onClick={toggleFavorite}
@@ -69,17 +105,19 @@ function Course({course, onFavoriteChange, ind}){
         <div className={styles["bottom-desc"]}>
           <div className={styles.left}>
             <div className={styles["desc-container"]}>
-              <div className={styles["desc"]}>{}</div>
+              <div className={styles["desc"]}>{decodeHtmlEntities(course.title)}</div>
             </div>
             <div className={styles["profile-section"]}>
               <button className={styles["icon"]}></button>
               <div>
-                <div className={styles["creator"]}>{course.author}</div>
+                <div className={styles["creator"]}>{
+                  getInstructorName(course.instructor)
+              }</div>
               </div>
             </div>
           </div>
           <div className={styles.right}>
-            {`$${course.price}`}
+            {getPrice(course.price)}
           </div>
         </div>
       </Link>
@@ -88,3 +126,4 @@ function Course({course, onFavoriteChange, ind}){
 }
 
 export default Course;
+

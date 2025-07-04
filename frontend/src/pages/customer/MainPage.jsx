@@ -5,20 +5,13 @@ import { useState, useEffect } from "react";
 // import { courses } from "../../services/courses";
 import Course from "../../components/course";
 import fetchAllCourses from "../../services/wordpressapi";
+import { useCourses } from "../../contexts/CourseContext";
 
 function MainPage() {
-  const [courseList, setCourseList] = useState([]);
+  const {courseList, loading} = useCourses();
   
   useEffect(() => {
-    const fetchCourses = async() => {
-      const response = await fetchAllCourses();
-      if (response){
-        setCourseList(response.data.courses);
-        console.log(response);
-      }
-    }
 
-    fetchCourses();
   }, []);
 
   return (
