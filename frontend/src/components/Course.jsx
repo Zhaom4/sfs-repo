@@ -3,8 +3,7 @@ import styles from '../components/Course.module.css'
 import { useEffect, useState } from "react";
 import { addToFavorites, removeFromFavorites, isFavorited } from "../services/api";
 import { Link } from "react-router-dom";
-import fetchAllCourses from "../services/wordpressapi";
-import { getThumbnailUrl } from "../services/wordpressapi";
+import { getInstructorName, getPrice, getThumbnail, decodeHtmlEntities } from "../services/helpers";
 
 function Course({course, onFavoriteChange, ind}){
   const [favorite, changeFavorite] = useState(false);
@@ -12,8 +11,8 @@ function Course({course, onFavoriteChange, ind}){
   
   useEffect(() => {
     changeFavorite(isFavorited(course.ID));
-    const url = getThumbnailUrl(course);
-    setThumbnail(url);
+    // const url = getThumbnailUrl(course);
+    // setThumbnail(url);
   }, [course.ID]);
 
   function toggleFavorite(e){
@@ -32,42 +31,6 @@ function Course({course, onFavoriteChange, ind}){
       onFavoriteChange();
     }
   }
-
-  const getInstructorName = (htmlString) => {
-    const match = htmlString.match(/<span class="instructor-display-name">(.*?)<\/span>/);
-    return match ? match[1] : 'Unknown Instructor';
-  };
-
-  const getPrice = (htmlString) => {
-    const priceMatch = htmlString.match(/<span class="price">(.*?)<\/span>/);
-    if (priceMatch) {
-      return priceMatch[1].replace(/&#036;/g, "$").trim();
-    }
-
-    const originalMatch = htmlString.match(
-      /<span class="origin-price">(.*?)<\/span>/
-    );
-    if (originalMatch) {
-      return originalMatch[1].replace(/&#036;/g, "$").trim();
-    }
-
-    return "Free";
-  };
-
-  const getThumbnail = (htmlString) => {
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlString;
-
-    const imgElement = tempDiv.querySelector('img');
-    const imgUrl = imgElement ? imgElement.src : null;
-    return imgUrl;
-  }
-
-  const decodeHtmlEntities = (text) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, "text/html");
-    return doc.documentElement.textContent;
-  };
 
   return (
     <div className={styles["course"]}>

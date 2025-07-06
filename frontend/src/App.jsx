@@ -7,6 +7,7 @@ import Favorites from './pages/customer/Favorites'
 import fetchAllCourses from './services/wordpressapi'
 import { useEffect, useState } from 'react'
 import { CourseProvider } from './contexts/CourseContext'
+import  Loader  from './components/Loader'
 // import { fetchCoursesTest } from './services/wordpressapi'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/mainpg" element={<MainPage />} />
         <Route path="/course/:id" element={<CoursePage />} />
         <Route path="/favorites" element={<Favorites />} />
+        {/* <Route path='/testing' element={</>} /> */}
       </Routes>
     </CourseProvider>
   );

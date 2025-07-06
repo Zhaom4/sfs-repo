@@ -1,22 +1,24 @@
 import styles from '../customer/Favorites.module.css'
 import { getFavorites } from '../../services/api';
 import { useEffect, useState } from 'react';
-import { courses } from '../../services/courses';
 import NavBar from '../../components/NavBar';
 import Course from '../../components/course';
 import { Link } from 'react-router-dom';
 import Lottie from "lottie-react";
 import animationData from '../../assets/sad-face.json';
 import {gsap} from 'gsap';
+import { useCourses } from '../../contexts/CourseContext';
+
 
 function Favorites() {
   // const [favoriteIds, setFavoriteIds] = useState([])
   const [favoriteCourses, setFavoriteCourses] = useState([])
+  const {courseList, loading} = useCourses();
 
   const refreshFavorites = () =>{
     const ids = getFavorites();
   // setFavoriteIds(ids);
-    const fullCourses = courses.filter(course => ids.includes(course.id));
+    const fullCourses = courseList.filter(course => ids.includes(course.ID));
     setFavoriteCourses(fullCourses);
   }
 
@@ -33,7 +35,7 @@ function Favorites() {
           {favoriteCourses.map((course) => {
             return (
               <Course
-                key={course.id}
+                key={course.ID}
                 course={course}
                 onFavoriteChange={refreshFavorites}
               />

@@ -1,18 +1,33 @@
 import NavBar from "../../components/NavBar";
 import styles from '../customer/CoursePage.module.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Heart, Play, Clock, Users, Star } from "lucide-react";
 import { useParams } from "react-router-dom";
-// import { courses } from "../../services/courses";
 import { useCourses } from "../../contexts/CourseContext";
+import { getPrice, getInstructorName, getThumbnail, decodeHtmlEntities } from '../../services/helpers';
+import { addToFavorites, removeFromFavorites, isFavorited } from "../../services/api";
 
 export default function CoursePage(){
   const {id} = useParams();
   const {courseList, loading} = useCourses();
   const course = courseList.find((c) => String(c.ID) === id); // String match for safety
-  const [isFavorited, setIsFavorited] = useState(false);
+  const [Favorited, setFavorited] = useState(false);
+
+  useEffect(()=>{
+    if (course && isFavorited(course.ID)){
+      setFavorited(true);
+    }
+  }, [course])
+  
+  if (loading || !course){
+    return(
+      <div>Loading...</div>
+    )
+  }
+
   
   return (
+  
     <div className={styles.container}>
       <NavBar />
 
@@ -32,8 +47,7 @@ export default function CoursePage(){
               </div>
 
               <h1 className={`${styles.title} ${styles.titleGradient }`}>
-                {course.title}
-                {/* <span className={styles.titleGradient}>Python</span> */}
+                {decodeHtmlEntities(course.title)}
               </h1>
 
               <p className={styles.description}>
@@ -63,16 +77,19 @@ export default function CoursePage(){
                 {`Purchase Course  -  ${course.price}`}
               </button>
               <button
-                onClick={() => setIsFavorited(!isFavorited)}
+                onClick={() => {
+                  Favorited ? removeFromFavorites(course.ID) : addToFavorites(course.ID);
+                  setFavorited(!Favorited)
+                }}
                 className={`${styles.favoriteBtn} ${
-                  isFavorited
+                  Favorited
                     ? styles.favoriteBtnActive
                     : styles.favoriteBtnDefault
                 }`}
               >
                 <Heart
                   className={`${styles.heartIcon} ${
-                    isFavorited ? styles.heartIconFilled : ""
+                    Favorited ? styles.heartIconFilled : ""
                   }`}
                 />
               </button>
@@ -85,7 +102,7 @@ export default function CoursePage(){
             <div className={styles.thumbnailContainer}>
               <div className={styles.thumbnail}>
                 <img
-                  src={`${course.thumbnail}`}
+                  src={`${getThumbnail(course.image)}`}
                   alt="Python Course Thumbnail"
                   className={styles.thumbnailImage}
                 />
@@ -99,16 +116,20 @@ export default function CoursePage(){
 
                 {/* Favorite Button */}
                 <button
-                  onClick={() => setIsFavorited(!isFavorited)}
+                  onClick={() => {
+                    Favorited ? removeFromFavorites(course.ID) : addToFavorites(course.ID);
+                    setFavorited(!Favorited)
+
+                  }}
                   className={`${styles.thumbnailFavoriteBtn} ${
-                    isFavorited
+                    Favorited
                       ? styles.thumbnailFavoriteBtnActive
                       : styles.thumbnailFavoriteBtnDefault
                   }`}
                 >
                   <Heart
                     className={`${styles.thumbnailHeartIcon} ${
-                      isFavorited ? styles.heartIconFilled : ""
+                      Favorited ? styles.heartIconFilled : ""
                     }`}
                   />
                 </button>
@@ -118,7 +139,7 @@ export default function CoursePage(){
             {/* CTA Buttons - Desktop */}
             <div className={styles.ctaButtonsDesktop}>
               <button className={styles.purchaseBtn}>
-                {`Purchase Course  -  ${course.price}`}
+                {`Purchase Course  -  ${getPrice(course.price)}`}
               </button>
             </div>
 

@@ -1,0 +1,62 @@
+:root{
+  --loader-text-color: #e5d7f7;
+  --loader-text-color-two: #80d0ff
+}
+
+body{
+  transition: all 0.4s ease;
+}
+
+.loader-container{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sc{
+  width: 30rem;
+  font-family: Satoshi;
+  font-weight: 800;
+  letter-spacing: 0.06em; /* adds slight spacing for bubbly feel */
+}
+
+.sc text {
+  font-size: 5rem;
+  stroke-width: 3;
+  fill: none;
+}
+
+.sc text.text-body{
+  stroke: var(--loader-text-color);
+  animation: 3.5s infinite alternate animate-stroke ;
+}
+
+@keyframes animate-stroke {
+  0%{
+    fill: transparent;
+    stroke: var(--loader-text-color);
+    stroke-width: 3;
+    stroke-dashoffset: 25%;
+    stroke-dasharray: 0 32%;
+  }
+  50%{
+    fill: transparent;
+        stroke-width: 3;
+
+    stroke: var(--loader-text-color);
+  }
+  80%{
+    fill: var(--loader-text-color);
+    stroke-width: 0;
+    stroke-dashoffset: -25%;
+    stroke-dasharray: 32% 0;
+  }
+  100%{
+    fill: var(--loader-text-color);
+    stroke-width: 0;
+    stroke-dashoffset: -30%;
+    stroke-dasharray: 32% 0;
+  }
+}

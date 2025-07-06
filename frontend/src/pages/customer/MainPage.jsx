@@ -6,14 +6,34 @@ import { useState, useEffect } from "react";
 import Course from "../../components/course";
 import fetchAllCourses from "../../services/wordpressapi";
 import { useCourses } from "../../contexts/CourseContext";
+import Loader from "../../components/Loader";
+import clsx from "clsx";
 
 function MainPage() {
   const {courseList, loading} = useCourses();
+  const [showLoader, setShowLoader] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
   
   useEffect(() => {
+    if (!loading){
+      setFadeOut(true);
 
-  }, []);
+      setTimeout(()=>{
+        setShowLoader(false)
+      }, 500)
+    }
 
+  }, [loading]);
+  if (showLoader){
+    return(
+      <div className={clsx(
+        styles['loader-container'], 
+        fadeOut && styles['fade']
+      )}>
+      <Loader ></Loader>
+      </div>
+    )
+  }
   return (
     <>
       <NavBar></NavBar>
@@ -32,5 +52,6 @@ function MainPage() {
     </>
   );
 }
+
 
 export default MainPage;
