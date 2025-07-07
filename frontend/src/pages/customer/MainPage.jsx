@@ -2,7 +2,6 @@ import NavBar from "../../components/NavBar";
 import styles from "../customer/MainPage.module.css";
 import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
-// import { courses } from "../../services/courses";
 import Course from "../../components/Course";
 import { useCourses } from "../../contexts/CourseContext";
 import Loader from "../../components/Loader";

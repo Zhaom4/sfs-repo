@@ -24,9 +24,14 @@ function Favorites() {
 
   useEffect(()=>{
     refreshFavorites();
-  }, [])
+  }, [courseList, loading])
 
 
+  if (loading){
+    return(
+      <NavBar></NavBar>
+    )
+  }
   return (
     <>
       <NavBar />

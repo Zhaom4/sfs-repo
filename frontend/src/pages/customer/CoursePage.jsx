@@ -1,54 +1,68 @@
 import NavBar from "../../components/NavBar";
-import styles from '../customer/CoursePage.module.css';
+import styles from "../customer/CoursePage.module.css";
 import { useEffect, useState } from "react";
 import { Heart, Play, Clock, Users, Star } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useCourses } from "../../contexts/CourseContext";
-import { getThumbnail, decodeHtmlEntities, getLink, extractText } from '../../services/helpers';
-import { addToFavorites, removeFromFavorites, isFavorited } from "../../services/api";
-import Loader from '../../components/Loader'
+import { addToMyCourses, isEnrolled, getMyCourses } from "../../services/api";
+import {
+  getThumbnail,
+  decodeHtmlEntities,
+  getLink,
+  extractText,
+} from "../../services/helpers";
+import {
+  addToFavorites,
+  removeFromFavorites,
+  isFavorited,
+} from "../../services/api";
+import Loader from "../../components/Loader";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
-export default function CoursePage(){
-  const {id} = useParams();
-  const {courseList, loading} = useCourses();
+export default function CoursePage() {
+  const { id } = useParams();
+  const { courseList, loading } = useCourses();
   const course = courseList.find((c) => String(c.ID) === id); // String match for safety
   const [Favorited, setFavorited] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false)
+  const [fadeOut, setFadeOut] = useState(false);
+  const [enrolled, setEnrolled] = useState(false);
 
   useEffect(()=>{
-    if (course && isFavorited(course.ID)){
+    if (isEnrolled(id)){
+      setEnrolled(true);
+    }
+  }, [])
+
+  useEffect(() => {
+    if (course && isFavorited(course.ID)) {
       setFavorited(true);
     }
-  }, [course])
+  }, [course]);
 
-  useEffect(()=>{
-    if (!loading){
+  useEffect(() => {
+    if (!loading) {
       setFadeOut(true);
 
-      setTimeout(()=>{
+      setTimeout(() => {
         setShowLoading(false);
-      }, 500)
+      }, 500);
     }
-  }, [loading])
-  
-  if (showLoading){
-    return(
-      <div className={clsx(
-        styles['loader-container'], 
-        fadeOut ? styles.fade : ''
-      )}>
+  }, [loading]);
+
+  if (showLoading) {
+    return (
+      <div
+        className={clsx(styles["loader-container"], fadeOut ? styles.fade : "")}
+      >
         <Loader></Loader>
       </div>
-
-    )
+    );
   }
 
-  if (!course){
-    return(
-      <div>Course not found</div>
-    )
+  if (!course) {
+    return <div>Course not found</div>;
   }
 
   return (
@@ -95,9 +109,7 @@ export default function CoursePage(){
 
             {/* CTA Buttons - Mobile */}
             <div className={styles.ctaButtonsMobile}>
-              <button className={styles.purchaseBtn}>
-                  {`Purchase Course  -  ${extractText(course.price, 'course-price')}`}
-              </button>
+              <button className={styles.purchaseBtn}>Enroll</button>
               <button
                 onClick={() => {
                   Favorited
@@ -111,6 +123,19 @@ export default function CoursePage(){
                     : styles.favoriteBtnDefault
                 }`}
               >
+                <div>
+                  <span className={styles.enrolled}>
+                    Enrolled successfully!
+                  </span>
+                  View course in{" "}
+                  <Link
+                    to={"/my-courses"}
+                    style={{ textDecoration: "none" }}
+                    className={styles["my-courses-link"]}
+                  >
+                    my courses
+                  </Link>
+                </div>
                 <Heart
                   className={`${styles.heartIcon} ${
                     Favorited ? styles.heartIconFilled : ""
@@ -165,15 +190,43 @@ export default function CoursePage(){
             <div className={styles.ctaButtonsDesktop}>
               <a
                 className={styles["btn-container"]}
-                href={getLink(decodeHtmlEntities(course.title))}
-                target="_blank"
+                // href={getLink(decodeHtmlEntities(course.title))}
+                // target="_blank"
               >
-                <button className={styles.purchaseBtn}>
-                  {`Purchase Course  -  ${extractText(course.price, 'course-price')}`}
+                <button
+                  className={styles.purchaseBtn}
+                  onClick={() => {
+                    setEnrolled(true);
+                    addToMyCourses(id);
+                  }}
+                >
+                  {enrolled ? "Enrolled!" : "Enroll"}
                 </button>
               </a>
             </div>
-
+            <div
+              className={clsx(
+                styles["enrolled-notif"],
+                enrolled && styles["visible"]
+              )}
+            >
+              <div style={{ display: "block" }}>
+                🎊
+                <span className={styles.enrolled}>
+                  {" "}
+                  Enrolled successfully!{" "}
+                </span>
+                🎉
+              </div>
+              View course in{" "}
+              <Link
+                to={"/my-courses"}
+                style={{ textDecoration: "none" }}
+                className={styles["my-courses-link"]}
+              >
+                my courses
+              </Link>
+            </div>
             {/* Course Features */}
           </div>
         </div>

@@ -3,16 +3,22 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import ProfileDropdown from './ProfileDropdown';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 function NavBar(){
-  const [activebtn, changeActivebtn] = useState('dashboard');
   const [open, setOpen] = useState(false);
+  const location = useLocation();
 
-  const handleClick = (btnName) => {
-    changeActivebtn(btnName)
-  }
-  
+  // Determine active button based on current path
+  const getActiveBtn = () => {
+    if (location.pathname === '/mainpg') return 'dashboard';
+    if (location.pathname === '/my-courses') return 'my-courses';
+    if (location.pathname === '/favorites') return 'favorites';
+    return 'dashboard'; // default
+  };
+
+  const activebtn = getActiveBtn();
+
   return (
     <>
       <div className={styles["navBar"]}>
@@ -33,29 +39,27 @@ function NavBar(){
               styles["nav-btn"],
               activebtn === "dashboard" && styles["active"]
             )}
-            onClick={() => handleClick("dashboard")}
           >
             dashboard
           </Link>
-          <button
+          <Link
+            to={'/my-courses'}
             className={clsx(
               styles["nav-btn"],
               activebtn === "my-courses" && styles["active"]
             )}
-            onClick={() => handleClick("my-courses")}
           >
             my courses
-          </button>
+          </Link>
           <Link className={clsx(styles["favorites"], styles["nav-btn"])}
-          to={'/favorites'}
-          style={{textDecoration: `none`}}
+            to={'/favorites'}
+            style={{textDecoration: `none`}}
           >
             <svg
               className={clsx(
                 styles["favorites-svg"],
                 activebtn === "favorites" && styles["active"]
               )}
-              onClick={() => handleClick("favorites")}
               xmlns="http://www.w3.org/2000/svg"
               height="24px"
               viewBox="0 -960 960 960"

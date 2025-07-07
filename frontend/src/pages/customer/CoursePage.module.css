@@ -172,8 +172,45 @@ a{
 }
 
 .purchaseBtn:hover {
-  background: linear-gradient(135deg, #1d4ed8, #1e40af); /* blue-700 to blue-800 */
-  /* transform: scale(1.05); */
+  background: linear-gradient(135deg, #274fc5, #1a3ea9); /* darker blue gradient */
+  transform:translateY(-3px);
+}
+
+.enrolled-notif{
+  margin-top: -1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: rgb(174, 180, 214);
+
+  opacity: 0;
+}
+
+.enrolled-notif.visible{
+  opacity: 1;
+}
+
+.enrolled {
+  background: linear-gradient(135deg, #60fac9, #64f0b8); /* blue-400 to green-400 */
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  filter: drop-shadow(0 0 5px rgba(96, 250, 170, 0.2)) 
+          drop-shadow(0 0 10px rgba(74, 222, 128, 0.2))
+          drop-shadow(0 0 15px rgba(96, 165, 250, 0.1));
+  
+        
+}
+
+
+
+.my-courses-link{
+  color: rgb(223, 217, 255);
+}
+
+.my-courses-link:hover{
+  cursor: pointer;
 }
 
 .favoriteBtn {

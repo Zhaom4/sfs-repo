@@ -20,3 +20,27 @@ export function getFavorites() {
   return JSON.parse(localStorage.getItem('favorites') || '[]');
 }
 
+//my courses 
+
+export function removeFromEnrolled(courseId){
+  let enrolled = JSON.parse(localStorage.getItem("my-courses") || []);
+  const ind = enrolled.findIndex(id => id===courseId);
+  if (ind > - 1 ) enrolled.splice(ind, 1)
+  localStorage.setItem('my-courses', JSON.stringify(enrolled));
+}
+
+
+export function addToMyCourses(courseID){
+  let myCourses = JSON.parse(localStorage.getItem('my-courses') || '[]');
+  myCourses.push(courseID);
+  localStorage.setItem('my-courses', JSON.stringify(myCourses));
+}
+
+export function isEnrolled(courseID){
+  let myCourses = JSON.parse(localStorage.getItem('my-courses') || '[]');
+  return myCourses.includes(courseID);
+}
+
+export function getMyCourses(){
+  return JSON.parse(localStorage.getItem('my-courses') || '[]');
+}
