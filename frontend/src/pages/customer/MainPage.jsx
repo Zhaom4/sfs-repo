@@ -3,17 +3,23 @@ import styles from "../customer/MainPage.module.css";
 import Sidebar from "../../components/Sidebar";
 import { useState, useEffect } from "react";
 // import { courses } from "../../services/courses";
-import Course from "../../components/course";
-import fetchAllCourses from "../../services/wordpressapi";
+import Course from "../../components/Course";
 import { useCourses } from "../../contexts/CourseContext";
 import Loader from "../../components/Loader";
 import clsx from "clsx";
+import { fetchCourseDetails } from "../../services/wordpressapi";
 
 function MainPage() {
   const {courseList, loading} = useCourses();
   const [showLoader, setShowLoader] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   
+  const getCourseDetails = async(course) => {
+    const response = await fetchCourseDetails(course.ID);
+    console.log('course details!: ', response);
+  }
+
+
   useEffect(() => {
     if (!loading){
       setFadeOut(true);

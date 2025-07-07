@@ -2,7 +2,7 @@ import styles from '../customer/Favorites.module.css'
 import { getFavorites } from '../../services/api';
 import { useEffect, useState } from 'react';
 import NavBar from '../../components/NavBar';
-import Course from '../../components/course';
+import Course from '../../components/Course';
 import { Link } from 'react-router-dom';
 import Lottie from "lottie-react";
 import animationData from '../../assets/sad-face.json';

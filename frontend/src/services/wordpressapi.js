@@ -27,68 +27,34 @@ const fetchAllCourses = async () => {
   }
 };
 
-export const getThumbnailUrl = async (course) => {
+export const fetchCourseDetails = async(key) => {
   const username = 'hiemily';
-  const appPassword = 'Nmp7 59Ti fktD kjQZ Uas6 Kkd8';
+  const appPassword = 'Nmp7 59Ti fktD kjQZ Uas6 Kkd8'; // From WordPress admin
   const credentials = btoa(`${username}:${appPassword}`);
-  
-  // Check if course has featured_media
-  if (!course.featured_media) {
-    return null;
-  }
 
-  try {
-    // Use the media ID to fetch the thumbnail
-    const response = await fetch(`https://studentsforstudents.fast-page.org/wp-json/wp/v2/media/${course.featured_media}`, {
+  try{
+    const response = await fetch(`https://studentsforstudents.fast-page.org/wp-json/lp/v1/courses/${key}`, {
       headers: {
         'Authorization': `Basic ${credentials}`,
         'Content-Type': 'application/json'
-      }
+      }, 
+      method: 'GET'
     });
 
-    if (!response.ok) {
-      return null;
+    if (!response.ok){
+      throw new Error('Error: ', response.status);
     }
 
-    const media = await response.json();
-    return media.source_url; // This is the thumbnail URL
-    
-  } catch (error) {
-    console.error('Error fetching thumbnail:', error);
-    return null;
+    const message = await response.json();
+
+    return message;
+  } catch (error){
+      console.error('Error fetching courses:', error);
+      return null;
   }
-};
 
+}
 
-// export const fetchCoursesTest = async() => {
-//   const username = 'hiemily';
-//   const appPassword = 'Nmp7 59Ti fktD kjQZ Uas6 Kkd8'; // From WordPress admin
-  
-//   const credentials = btoa(`${username}:${appPassword}`);
-  
-//   try {
-//     const response = await fetch('https://studentsforstudents.fast-page.org/wp-json/lp/v1/courses', {
-//       headers: {
-//         'Authorization': `Basic ${credentials}`,
-//         'Content-Type': 'application/json'
-//       }, 
-//       method: 'GET', 
-      
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`Failed to fetch courses: ${response.status}`);
-//     }
-    
-//     const courses = await response.json();
-
-//     return courses.data.courses;
-    
-//   } catch (error) {
-//     console.error('Error fetching courses:', error);
-//     return null;
-//   }
-// }
 
 
 export default fetchAllCourses;

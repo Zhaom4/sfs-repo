@@ -3,16 +3,14 @@ import styles from '../components/Course.module.css'
 import { useEffect, useState } from "react";
 import { addToFavorites, removeFromFavorites, isFavorited } from "../services/api";
 import { Link } from "react-router-dom";
-import { getInstructorName, getPrice, getThumbnail, decodeHtmlEntities } from "../services/helpers";
+import { getThumbnail, decodeHtmlEntities, extractText } from "../services/helpers";
 
 function Course({course, onFavoriteChange, ind}){
   const [favorite, changeFavorite] = useState(false);
-  const [thumbnail, setThumbnail] = useState('');
   
   useEffect(() => {
     changeFavorite(isFavorited(course.ID));
-    // const url = getThumbnailUrl(course);
-    // setThumbnail(url);
+
   }, [course.ID]);
 
   function toggleFavorite(e){
@@ -74,13 +72,13 @@ function Course({course, onFavoriteChange, ind}){
               <button className={styles["icon"]}></button>
               <div>
                 <div className={styles["creator"]}>{
-                  getInstructorName(course.instructor)
+                  extractText(course.instructor, 'course-instructor')
               }</div>
               </div>
             </div>
           </div>
           <div className={styles.right}>
-            {getPrice(course.price)}
+            {extractText(course.level, 'course-level')}
           </div>
         </div>
       </Link>

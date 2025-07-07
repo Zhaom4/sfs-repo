@@ -4,30 +4,54 @@ import { useEffect, useState } from "react";
 import { Heart, Play, Clock, Users, Star } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useCourses } from "../../contexts/CourseContext";
-import { getPrice, getInstructorName, getThumbnail, decodeHtmlEntities } from '../../services/helpers';
+import { getThumbnail, decodeHtmlEntities, getLink, extractText } from '../../services/helpers';
 import { addToFavorites, removeFromFavorites, isFavorited } from "../../services/api";
+import Loader from '../../components/Loader'
+import clsx from "clsx";
 
 export default function CoursePage(){
   const {id} = useParams();
   const {courseList, loading} = useCourses();
   const course = courseList.find((c) => String(c.ID) === id); // String match for safety
   const [Favorited, setFavorited] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false)
 
   useEffect(()=>{
     if (course && isFavorited(course.ID)){
       setFavorited(true);
     }
   }, [course])
+
+  useEffect(()=>{
+    if (!loading){
+      setFadeOut(true);
+
+      setTimeout(()=>{
+        setShowLoading(false);
+      }, 500)
+    }
+  }, [loading])
   
-  if (loading || !course){
+  if (showLoading){
     return(
-      <div>Loading...</div>
+      <div className={clsx(
+        styles['loader-container'], 
+        fadeOut ? styles.fade : ''
+      )}>
+        <Loader></Loader>
+      </div>
+
     )
   }
 
-  
+  if (!course){
+    return(
+      <div>Course not found</div>
+    )
+  }
+
   return (
-  
     <div className={styles.container}>
       <NavBar />
 
@@ -46,13 +70,11 @@ export default function CoursePage(){
                 </span>
               </div>
 
-              <h1 className={`${styles.title} ${styles.titleGradient }`}>
+              <h1 className={`${styles.title} ${styles.titleGradient}`}>
                 {decodeHtmlEntities(course.title)}
               </h1>
 
-              <p className={styles.description}>
-                {course.author}
-              </p>
+              <p className={styles.description}>{course.author}</p>
             </div>
 
             {/* Course Stats */}
@@ -74,12 +96,14 @@ export default function CoursePage(){
             {/* CTA Buttons - Mobile */}
             <div className={styles.ctaButtonsMobile}>
               <button className={styles.purchaseBtn}>
-                {`Purchase Course  -  ${course.price}`}
+                  {`Purchase Course  -  ${extractText(course.price, 'course-price')}`}
               </button>
               <button
                 onClick={() => {
-                  Favorited ? removeFromFavorites(course.ID) : addToFavorites(course.ID);
-                  setFavorited(!Favorited)
+                  Favorited
+                    ? removeFromFavorites(course.ID)
+                    : addToFavorites(course.ID);
+                  setFavorited(!Favorited);
                 }}
                 className={`${styles.favoriteBtn} ${
                   Favorited
@@ -117,9 +141,10 @@ export default function CoursePage(){
                 {/* Favorite Button */}
                 <button
                   onClick={() => {
-                    Favorited ? removeFromFavorites(course.ID) : addToFavorites(course.ID);
-                    setFavorited(!Favorited)
-
+                    Favorited
+                      ? removeFromFavorites(course.ID)
+                      : addToFavorites(course.ID);
+                    setFavorited(!Favorited);
                   }}
                   className={`${styles.thumbnailFavoriteBtn} ${
                     Favorited
@@ -138,9 +163,15 @@ export default function CoursePage(){
 
             {/* CTA Buttons - Desktop */}
             <div className={styles.ctaButtonsDesktop}>
-              <button className={styles.purchaseBtn}>
-                {`Purchase Course  -  ${getPrice(course.price)}`}
-              </button>
+              <a
+                className={styles["btn-container"]}
+                href={getLink(decodeHtmlEntities(course.title))}
+                target="_blank"
+              >
+                <button className={styles.purchaseBtn}>
+                  {`Purchase Course  -  ${extractText(course.price, 'course-price')}`}
+                </button>
+              </a>
             </div>
 
             {/* Course Features */}
