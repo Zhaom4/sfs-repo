@@ -162,18 +162,25 @@ a{
   flex: 1;
   background: linear-gradient(135deg, #2563eb, #1d4ed8); /* blue-600 to blue-700 */
   color: white;
-  font-weight: 600;
+  font-weight: 650;
   padding: 1rem 2rem;
   border-radius: 0.75rem;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.25);
+  font-size: 1rem;
+  font-family: satoshi;
 }
 
 .purchaseBtn:hover {
   background: linear-gradient(135deg, #274fc5, #1a3ea9); /* darker blue gradient */
   transform:translateY(-3px);
+}
+
+.purchaseBtn.openCourseBtn{
+  background: linear-gradient(135deg, #46cd77, #3bc06c); /* darker blue gradient */
+  box-shadow: 0 10px 15px -3px rgba(48, 246, 121, 0.25);
 }
 
 .enrolled-notif{
@@ -185,6 +192,7 @@ a{
 
   opacity: 0;
 }
+
 
 .enrolled-notif.visible{
   opacity: 1;
@@ -251,6 +259,7 @@ a{
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  transform: translateY(7%);
 }
 
 .thumbnailContainer {

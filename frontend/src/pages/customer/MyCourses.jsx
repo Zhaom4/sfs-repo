@@ -39,7 +39,7 @@ function MyCourses(){
                   <Course
                     key={course.ID}
                     course={course}
-                    onFavoriteChange={refreshEnrolled}
+                    onEnrolledChange={refreshEnrolled}
                   />
                 );
               })}

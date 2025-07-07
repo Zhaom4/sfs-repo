@@ -1,7 +1,7 @@
 import NavBar from "../../components/NavBar";
 import styles from "../customer/CoursePage.module.css";
 import { useEffect, useState } from "react";
-import { Heart, Play, Clock, Users, Star } from "lucide-react";
+import { Heart, Play, Clock, Users, Star, ExternalLink } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useCourses } from "../../contexts/CourseContext";
 import { addToMyCourses, isEnrolled, getMyCourses } from "../../services/api";
@@ -23,17 +23,20 @@ import { Link } from "react-router-dom";
 export default function CoursePage() {
   const { id } = useParams();
   const { courseList, loading } = useCourses();
-  const course = courseList.find((c) => String(c.ID) === id); // String match for safety
+  const course = courseList.find((c) => String(c.ID) === id);
   const [Favorited, setFavorited] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const [enrolled, setEnrolled] = useState(false);
+  const [showEnrolledMessage, setShowEnrolledMessage] = useState(false);
+  const [buttonState, setButtonState] = useState('enroll'); // 'enroll' | 'enrolling' | 'enrolled' | 'open'
 
-  useEffect(()=>{
-    if (isEnrolled(id)){
+  useEffect(() => {
+    if (isEnrolled(id)) {
       setEnrolled(true);
+      setButtonState('open');
     }
-  }, [])
+  }, [id]);
 
   useEffect(() => {
     if (course && isFavorited(course.ID)) {
@@ -44,12 +47,51 @@ export default function CoursePage() {
   useEffect(() => {
     if (!loading) {
       setFadeOut(true);
-
       setTimeout(() => {
         setShowLoading(false);
       }, 500);
     }
   }, [loading]);
+
+  const handleEnrollClick = () => {
+    if (!enrolled) {
+      // Start enrollment process
+      setButtonState('enrolling');
+      
+      // Simulate enrollment process (you might want to make this async)
+      setTimeout(() => {
+        addToMyCourses(id);
+        setEnrolled(true);
+        setShowEnrolledMessage(true);
+        setButtonState('enrolled');
+        
+        // After showing success message, smoothly transition to open course
+        setTimeout(() => {
+          setShowEnrolledMessage(false);
+          setButtonState('open');
+        }, 2000);
+      }, 800); // Small delay to show the loading state
+      
+    } else {
+      // If already enrolled, open the course
+      window.open(getLink(decodeHtmlEntities(course.title)), '_blank');
+    }
+  };
+
+  const getButtonConfig = () => {
+    switch (buttonState) {
+      case 'enroll':
+        return { text: 'Enroll Now', disabled: false, icon: null };
+      case 'enrolling':
+        return { text: 'Enrolling...', disabled: true, icon: null };
+      case 'enrolled':
+        return { text: 'Enrolled!', disabled: true, icon: null };
+      case 'open':
+        return { text: 'Open Course', disabled: false, icon: <ExternalLink size={16} /> };
+      default:
+        return { text: 'Enroll Now', disabled: false, icon: null };
+    }
+  };
 
   if (showLoading) {
     return (
@@ -64,6 +106,8 @@ export default function CoursePage() {
   if (!course) {
     return <div>Course not found</div>;
   }
+
+  const buttonConfig = getButtonConfig();
 
   return (
     <div className={styles.container}>
@@ -105,43 +149,6 @@ export default function CoursePage() {
                 <Star className={`${styles.statIcon} ${styles.starIcon}`} />
                 <span>4.8 (324 reviews)</span>
               </div>
-            </div>
-
-            {/* CTA Buttons - Mobile */}
-            <div className={styles.ctaButtonsMobile}>
-              <button className={styles.purchaseBtn}>Enroll</button>
-              <button
-                onClick={() => {
-                  Favorited
-                    ? removeFromFavorites(course.ID)
-                    : addToFavorites(course.ID);
-                  setFavorited(!Favorited);
-                }}
-                className={`${styles.favoriteBtn} ${
-                  Favorited
-                    ? styles.favoriteBtnActive
-                    : styles.favoriteBtnDefault
-                }`}
-              >
-                <div>
-                  <span className={styles.enrolled}>
-                    Enrolled successfully!
-                  </span>
-                  View course in{" "}
-                  <Link
-                    to={"/my-courses"}
-                    style={{ textDecoration: "none" }}
-                    className={styles["my-courses-link"]}
-                  >
-                    my courses
-                  </Link>
-                </div>
-                <Heart
-                  className={`${styles.heartIcon} ${
-                    Favorited ? styles.heartIconFilled : ""
-                  }`}
-                />
-              </button>
             </div>
           </div>
 
@@ -188,27 +195,63 @@ export default function CoursePage() {
 
             {/* CTA Buttons - Desktop */}
             <div className={styles.ctaButtonsDesktop}>
-              <a
-                className={styles["btn-container"]}
-                // href={getLink(decodeHtmlEntities(course.title))}
-                // target="_blank"
-              >
+              <div className={styles["btn-container"]}>
                 <button
-                  className={styles.purchaseBtn}
-                  onClick={() => {
-                    setEnrolled(true);
-                    addToMyCourses(id);
+                  className={clsx(
+                    styles.purchaseBtn,
+                    buttonState === 'open' && styles.openCourseBtn,
+                    buttonState === 'enrolled' && styles.enrolledBtn,
+                    buttonState === 'enrolling' && styles.enrollingBtn
+                  )}
+                  onClick={handleEnrollClick}
+                  disabled={buttonConfig.disabled}
+                  style={{
+                    textAlign: 'center',
+                    transition: 'all 0.3s ease',
+                    transform: buttonState === 'enrolled' ? 'scale(1.05)' : 'scale(1)',
+                    display: 'flex', 
+                    justifyContent:'center',
+                    alignItems: 'center'
                   }}
                 >
-                  {enrolled ? "Enrolled!" : "Enroll"}
+                  <span style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '8px',
+                    transition: 'all 0.3s ease',
+                    textAlign: 'center'
+                  }}>
+                    {buttonConfig.text}
+                    {buttonConfig.icon}
+                  </span>
+                  
+                  {/* Loading spinner for enrolling state */}
+                  {buttonState === 'enrolling' && (
+                    <div style={{
+                      width: '16px',
+                      height: '16px',
+                      border: '2px solid #ffffff40',
+                      borderTop: '2px solid #ffffff',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite',
+                      marginLeft: '8px'
+                    }} />
+                  )}
                 </button>
-              </a>
+              </div>
             </div>
+            
+            {/* Enrollment Success Notification */}
             <div
               className={clsx(
                 styles["enrolled-notif"],
-                enrolled && styles["visible"]
+                showEnrolledMessage && styles["visible"]
               )}
+              style={{
+                transition: 'all 0.4s ease',
+                transform: showEnrolledMessage ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.95)',
+                opacity: showEnrolledMessage ? 1 : 0
+              }}
             >
               <div style={{ display: "block" }}>
                 🎊
@@ -273,6 +316,13 @@ export default function CoursePage() {
           </ul>
         </div>
       </div>
+      
+      <style jsx>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }
