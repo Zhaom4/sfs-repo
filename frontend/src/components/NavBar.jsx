@@ -4,8 +4,9 @@ import { useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import ProfileDropdown from './ProfileDropdown';
 import { Link, useLocation } from 'react-router-dom';
+import SearchBar from './SearchBar';
 
-function NavBar(){
+function NavBar({onSearch}){
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
@@ -14,27 +15,37 @@ function NavBar(){
     if (location.pathname === '/mainpg') return 'dashboard';
     if (location.pathname === '/my-courses') return 'my-courses';
     if (location.pathname === '/favorites') return 'favorites';
-    return 'dashboard'; // default
   };
 
   const activebtn = getActiveBtn();
 
+  const handleSearch = (searchTerm) => {
+    // Pass the search term to parent component
+    if (onSearch) {
+      onSearch(searchTerm);
+    }
+  };
   return (
     <>
       <div className={styles["navBar"]}>
         <div className={styles["left"]}>SFS</div>
-        <div className={styles["search-bar"]}>
+        <SearchBar
+          onSearch={handleSearch}
+          placeholder="Search courses..."
+        ></SearchBar>
+
+        {/* <div className={styles["search-bar"]}>
           <FaSearch className={styles["search-icon"]} />
           <input type="text" placeholder="Search" />
           <div className={styles["shortcut"]}>
             <span className={styles["key"]}>⌘</span>
             <span className={styles["key"]}>K</span>
           </div>
-        </div>
+        </div> */}
         <div className={styles["right"]}>
           <Link
-            style={{textDecoration: 'none'}}
-            to={'/mainpg'}
+            style={{ textDecoration: "none" }}
+            to={"/mainpg"}
             className={clsx(
               styles["nav-btn"],
               activebtn === "dashboard" && styles["active"]
@@ -43,7 +54,7 @@ function NavBar(){
             dashboard
           </Link>
           <Link
-            to={'/my-courses'}
+            to={"/my-courses"}
             className={clsx(
               styles["nav-btn"],
               activebtn === "my-courses" && styles["active"]
@@ -51,9 +62,10 @@ function NavBar(){
           >
             my courses
           </Link>
-          <Link className={clsx(styles["favorites"], styles["nav-btn"])}
-            to={'/favorites'}
-            style={{textDecoration: `none`}}
+          <Link
+            className={clsx(styles["favorites"], styles["nav-btn"])}
+            to={"/favorites"}
+            style={{ textDecoration: `none` }}
           >
             <svg
               className={clsx(
@@ -68,8 +80,13 @@ function NavBar(){
               <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z" />
             </svg>
           </Link>
-          <button className={styles["profile-icon"]} onClick={()=>{setOpen(!open)}}>
-              <ProfileDropdown open={open}></ProfileDropdown>
+          <button
+            className={styles["profile-icon"]}
+            onClick={() => {
+              setOpen(!open);
+            }}
+          >
+            <ProfileDropdown open={open}></ProfileDropdown>
           </button>
         </div>
       </div>

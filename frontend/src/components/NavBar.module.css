@@ -37,9 +37,7 @@
 
 .nav-btn.active{
   color: #e2e2f9;
-  fill: #e2e2f9;
 }
-
 
 .navBar .left{
   font-weight: 700;
@@ -75,7 +73,11 @@
 .favorites{
   all: unset;
   transform: translateY(0.1rem);
-  fill:#bdbdc0;
+  fill:#c6c6c6;
+}
+
+.favorites-svg.active{
+  fill: #e2e2f9;
 }
 
 .search-bar {
