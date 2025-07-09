@@ -15,6 +15,7 @@ function NavBar({onSearch}){
     if (location.pathname === '/mainpg') return 'dashboard';
     if (location.pathname === '/my-courses') return 'my-courses';
     if (location.pathname === '/favorites') return 'favorites';
+    if (location.pathname === '/donate') return 'donate'
   };
 
   const activebtn = getActiveBtn();
@@ -61,6 +62,14 @@ function NavBar({onSearch}){
             )}
           >
             my courses
+          </Link>
+          <Link
+          to={'/donate'}
+          className={clsx(styles['nav-btn'],
+            activebtn === 'donate' && styles['active']
+          )}
+          >
+            donate
           </Link>
           <Link
             className={clsx(styles["favorites"], styles["nav-btn"])}

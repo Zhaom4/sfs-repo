@@ -1,0 +1,89 @@
+
+
+.container{
+  width: 100vw;
+  padding-top: 4rem;
+
+}
+
+.head{
+  display: flex;
+  border: rgba(233, 223, 254, 0.674) solid 1px;
+  border-top: none;
+  width: 95vw;
+  transform: translateX(2.5rem);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.head:hover{
+  border-color: rgb(232, 223, 254)
+}
+
+.square{
+  aspect-ratio: 1/1;
+  height: 15px;
+  background-color: rgb(180, 185, 253);
+  position: absolute;
+  bottom: -7.5px;
+  right: -7.5px;
+}
+
+.square:nth-child(1){
+  left: -7.5px;
+}
+
+.book-container{
+  height: 70vh;
+  flex: 0.35;
+  /* background-color: red; */
+}
+
+
+
+.book{
+  height: 370px;
+  width: 200px; 
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.book:nth-child(1){
+  background-image: url('../../images/book2.jpg');
+  left: -3rem;
+  top: 8%;
+  transform: rotate(15deg)
+}
+
+.book:nth-child(2){
+  background-image: url('../../images/book1.jpg');
+  left: -2.5rem; 
+  top: 17%;
+  transform: translateY(-50%); 
+  transform: rotate(30deg)
+}
+
+.book-container:hover .book{
+}
+
+.head:hover .book:nth-child(1){
+    transform: scale(1.15) rotate(20deg) translateY(5px);
+
+}
+
+
+.head:hover .book:nth-child(2){
+  transform: scale(1.15) rotate(40deg) translateY(10px);
+
+}
+
+@keyframes ebb{
+  0%, 100%{
+    transform: scale(1);
+  } 50%{
+    transform: scale(1.05);
+  }
+}

@@ -1,0 +1,21 @@
+*{
+  cursor: none;
+}
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.cursor {
+  position: fixed;
+    width: 15px; 
+    height: 15px;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255);
+/*To put it on the center of the cursor*/
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+   /* So the JS can work properly*/
+    pointer-events: none;
+}
