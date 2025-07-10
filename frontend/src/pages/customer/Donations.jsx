@@ -5,34 +5,6 @@ import { getCursor } from '../../services/cursorManager';
 
 function Donations(){
 
-  // const cursor = getCursor();
-
-  // const handleMouseEnter = () => {
-  //   if (cursor) {
-  //     gsap.to(cursor, {
-  //       width: 20,
-  //       height: 20,
-  //       backgroundColor: "rgba(0,0,0,0)", 
-  //       borderWidth: 1,
-  //       duration: 0.2, 
-  //       ease: "power2.inOut"
-  //     });
-  //   }
-  // }
-
-  // const handleMouseLeave = () => {
-  //   if (cursor) {
-  //     gsap.to(cursor, {
-  //       width: 15,
-  //       height: 15,
-  //       backgroundColor: "rgb(255, 255, 255)", 
-  //       borderWidth: 0,
-  //       duration: 0.2, 
-  //       ease: "power2.inOut"
-  //     });
-  //   }
-  // }
-
   return (
     <div className={styles.container}>
       <NavBar></NavBar>
@@ -48,7 +20,35 @@ function Donations(){
           <div className={styles.book}></div>
         </div>
         <div className={styles.left} style={{color: 'white'}}>
-          YAY
+          <h1 className={styles.header1}>
+            Make a difference in accessible education.
+          </h1>
+          <h3 className={styles.header2}>Your impact is just one click away.</h3>
+          <button className={styles['donate-btn']}
+          onClick={()=> window.open('https://gofund.me/07060664')}
+          >Donate</button>
+        </div>
+        <div className={styles['computer']}></div>
+      </section>
+      <section className={styles['our-mission']}>
+        <div className={styles.tag}>
+          
+        </div>
+      </section>
+      <section className={styles['body1']}>
+        <h1 className={styles.header1}>Where your money goes</h1>
+        {/* <hr className={styles.line}></hr> */}
+        <div className={styles['reason-container']}>
+          <div className={styles.reason}>
+
+          </div>
+          <div className={styles.reason}>
+    
+          </div>
+          <div className={styles.reason}>
+    
+          </div>
+          
         </div>
       </section>
     </div>

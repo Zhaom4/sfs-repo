@@ -8,16 +8,18 @@
 
 .head{
   display: flex;
-  border: rgba(233, 223, 254, 0.674) solid 1px;
+  border: rgba(233, 223, 254, 0.4) solid 1px;
   border-top: none;
   width: 95vw;
   transform: translateX(2.5rem);
   position: relative;
   transition: all 0.3s ease;
+  gap: 2rem;
 }
 
 .head:hover{
-  border-color: rgb(232, 223, 254)
+  background-color: rgba(147, 147, 213, 0.3);
+  border-color: rgb(199, 179, 255)
 }
 
 .square{
@@ -48,14 +50,16 @@
   background-repeat: no-repeat;
   position: absolute;
   transition: all 0.3s ease;
-  z-index: 2;
+  z-index: 100;
 }
 
 .book:nth-child(1){
   background-image: url('../../images/book2.jpg');
   left: -3rem;
   top: 8%;
-  transform: rotate(15deg)
+  transform: rotate(15deg);
+  z-index: 100;
+
 }
 
 .book:nth-child(2){
@@ -63,11 +67,10 @@
   left: -2.5rem; 
   top: 17%;
   transform: translateY(-50%); 
+  z-index: 100;
   transform: rotate(30deg)
 }
 
-.book-container:hover .book{
-}
 
 .head:hover .book:nth-child(1){
     transform: scale(1.15) rotate(20deg) translateY(5px);
@@ -86,4 +89,144 @@
   } 50%{
     transform: scale(1.05);
   }
+}
+
+.left{
+  flex: 1;
+  /* background-color: red; */
+  transform: translateX(-2rem);
+  /* text-align: center; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.left .header1{
+  color:rgb(190, 180, 253);
+  font-size: 3.3rem;
+  margin-bottom: 7px;
+  font-weight: 700;
+}
+
+.left .header2{
+  color:rgb(234, 234, 254);
+  font-size: 1.5rem;
+  font-style:oblique;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.donate-btn{
+  all: unset;
+  font-family: satoshi;
+  border: 2px white solid;
+  font-size: 1.3rem;
+  padding: 10px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: relative;
+  color: rgb(240, 239, 248);
+  background-color: rgb(65, 65, 69);
+  transition: all 0.3s ease;
+  width: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.donate-btn:hover{
+  color: rgb(255, 255, 255);
+  background-color: rgb(44, 44, 48);
+}
+
+.computer{
+  position: absolute;
+  right: -12rem;
+  bottom: -5rem;
+  height: 450px;
+  aspect-ratio: 3/2;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('../../images/computer.png');
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.head:hover .computer{
+  right: -9rem;
+  bottom: -5rem;
+}
+
+@property --angle{
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.donate-btn:hover::after{
+  opacity: 1;
+}
+  
+.donate-btn::after{
+  opacity: 0;
+  animation: 2s spin linear infinite;
+
+}
+
+.donate-btn::after, .donate-btn::before{
+  --angle: 0deg;
+  content: '';
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  padding: 4px;
+  border-radius: 30px;
+  background: conic-gradient(from var(--angle), rgba(111, 106, 255, 0), rgb(216, 190, 255) 100%);
+}
+
+@keyframes spin {
+  from{
+    --angle: 0deg;
+  } to{
+    --angle: 360deg;
+  }
+}
+
+.donate-btn::before{
+  
+  filter: blur(1rem);
+  opacity: 0.5
+}
+
+.body1{
+  margin-top: 4rem;
+  height: 70vh;
+}
+
+.body1 .header1{
+  color: white;
+  font-family: satoshi;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.reason-container{
+  margin-top: 4rem;
+  display: flex;
+  gap: 3rem;
+  width: 80vw;
+  transform: translateX(10vw);
+}
+
+
+.reason{
+  height: 60vh;
+  flex: 1;
+  background-color: rgb(235, 235, 236);
+  border-radius: 10px;
 }
