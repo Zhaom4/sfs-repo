@@ -8,11 +8,13 @@ import { useEffect, useRef, useState } from 'react'
 import { CourseProvider } from './contexts/CourseContext'
 import MyCourses from './pages/customer/MyCourses'
 import Donations from './pages/customer/Donations'
+import { CursorProvider } from './contexts/CursorContext'
 import gsap from 'gsap'
 import { setCursor, getCursor } from './services/cursorManager'
 
 function App() {
   const cursor = useRef();
+  
   
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -30,6 +32,7 @@ function App() {
     };
   }, []);
   return (
+    <CursorProvider>
     <CourseProvider>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
@@ -39,8 +42,8 @@ function App() {
         <Route path='/my-courses' element={<MyCourses/>}/>
         <Route path='/donate' element={<Donations/>}/>
       </Routes>
-      <div id='cursor' className='cursor' ref={cursor}></div>
     </CourseProvider>
+    </CursorProvider>
   );
 }
 

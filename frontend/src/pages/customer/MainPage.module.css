@@ -22,13 +22,6 @@ body{
   /* overflow-y: auto; */
 }
 
-.courseWrapper{
-  all: unset;
-}
-
-.courseWrapper:hover{
-  cursor: pointer;
-}
 
 .loader-container{
   opacity: 1;

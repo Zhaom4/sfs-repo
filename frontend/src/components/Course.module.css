@@ -6,9 +6,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 100%;
-  max-width: 600px;
-  /* min-height: 300px; */
+  max-width: 100%;
+  min-height: 225px;
 }
 
 /* ADD THIS: Make sure the Link takes full height and maintains flex layout */

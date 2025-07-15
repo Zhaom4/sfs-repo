@@ -1,4 +1,6 @@
-
+:root{
+  --light-purple:rgb(247, 233, 255);
+}
 
 .container{
   width: 100vw;
@@ -38,7 +40,6 @@
 .book-container{
   height: 70vh;
   flex: 0.35;
-  /* background-color: red; */
 }
 
 
@@ -49,7 +50,7 @@
   background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
-  transition: all 0.3s ease;
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   z-index: 100;
 }
 
@@ -73,13 +74,13 @@
 
 
 .head:hover .book:nth-child(1){
-    transform: scale(1.15) rotate(20deg) translateY(5px);
+    transform: scale(1.05) rotate(20deg) translateY(5px);
 
 }
 
 
 .head:hover .book:nth-child(2){
-  transform: scale(1.15) rotate(40deg) translateY(10px);
+  transform: scale(1.05) rotate(40deg) translateY(10px);
 
 }
 
@@ -93,9 +94,7 @@
 
 .left{
   flex: 1;
-  /* background-color: red; */
-  transform: translateX(-2rem);
-  /* text-align: center; */
+  transform: translateX(-4rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -118,13 +117,13 @@
 
 .donate-btn{
   all: unset;
-  font-family: satoshi;
+  font-family: Clash Display;
   border: 2px white solid;
   font-size: 1.3rem;
   padding: 10px 30px;
   border-radius: 25px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   position: relative;
   color: rgb(240, 239, 248);
   background-color: rgb(65, 65, 69);
@@ -203,16 +202,18 @@
 }
 
 .body1{
-  margin-top: 4rem;
-  height: 70vh;
+  margin-top: 6rem;
+  height: 80vh;
 }
 
 .body1 .header1{
   color: white;
-  font-family: satoshi;
+  font-family: Clash Display;
   text-align: center;
   margin-bottom: 2rem;
   font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 1px;
 }
 
 .reason-container{
@@ -220,13 +221,114 @@
   display: flex;
   gap: 3rem;
   width: 80vw;
-  transform: translateX(10vw);
+  margin-left: 10vw;
+  justify-content: center;
+  align-items: center;
+
 }
 
 
 .reason{
   height: 60vh;
   flex: 1;
-  background-color: rgb(235, 235, 236);
-  border-radius: 10px;
+  background-color: rgb(242, 242, 245);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
 }
+
+.lib-img{
+  background-image: url('../../images/library.jpg');
+  height: 60%;
+  width: 90%;
+  background-size: cover;
+}
+
+.sparkle-icon{
+  height: 1.5rem;
+  width: 1.5rem;
+  fill: var(--light-purple);
+  transform: translateY(-2px);
+}
+
+.mission-container{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 0;
+  margin-top: -4rem;
+}
+
+.our-mission{
+  margin-top: -2rem;
+  padding-left: 6rem;
+  display: flex;
+  align-items: center;
+  color: white;
+
+}
+
+.mission-statement{
+  opacity: 0.4;
+  margin-top: 3rem;
+  color: white;
+  font-family: Arial;
+  font-weight: 500;
+  font-size: 2.3em;
+  margin-left: 7rem;
+  padding-right: 7rem;
+  filter: blur(1.5rem); 
+  line-height: 3.5rem;
+}
+
+.mission-statement .catch{
+  transform: translateX(8rem);
+  display: block;
+}
+.highlight{
+  position: relative;
+}
+
+.mission-statement:hover .highlight::after{
+  width: 100%;
+}
+
+.highlight::after{
+  content: '';
+  position: absolute;
+  height: 110%;
+  width: 0%;
+  background: #ffdbc9;
+  background: linear-gradient(270deg,rgb(255, 201, 250) 0%, rgba(96, 174, 252, 1) 100%);  
+  top: 50%;
+  left: 0%;
+  transform: translateY(-50%);
+  transform-origin: left center; 
+  z-index: -2;
+  opacity: 0.4;
+  transition: all 0.5s ease;
+}
+
+.plus{
+  font-size: 2rem;
+  color: var(--light-purple);
+}
+
+hr{
+}
+
+.line{
+  width: 85vw;
+  height: 1px;
+  background-color: var(--light-purple);
+}
+.divider{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+

@@ -84,7 +84,9 @@ function MainPage() {
   const coursesToDisplay = searchTerm ? searchResults : courseList;
 
   return (
+    
     <>
+    {console.log(courseList)}
       <NavBar onSearch={handleSearch} />
       <Sidebar />
       <div className={styles["container"]}>
@@ -96,7 +98,7 @@ function MainPage() {
             <>
               {coursesToDisplay.length > 0 ? (
                 coursesToDisplay.map((course) => {
-                  console.log(courseDetails)
+                  console.log(course)
                   return (
                     <Course key={course.ID} course={course} ind={coursesToDisplay.indexOf(course)} />
                   );

@@ -65,7 +65,7 @@ function MyCourses(){
           {coursesToDisplay.length > 0 ? (
             coursesToDisplay.map((course) => {
               return (
-                <Course key={course.ID} course={course} ind={coursesToDisplay.indexOf(course)} />
+                <Course key={course.ID} course={course} onEnrolledChange={refreshEnrolled} />
               );
             })
           ) : searchTerm ? (
