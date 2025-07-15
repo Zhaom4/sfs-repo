@@ -6,8 +6,6 @@ import Course from "../../components/Course";
 import { useCourses } from "../../contexts/CourseContext";
 import Loader from "../../components/Loader";
 import clsx from "clsx";
-// import { fetchCourseDetails } from "../../services/wordpressapi";
-import { fetchCourseLessons } from "../../services/wordpressapi";
 import { decodeHtmlEntities } from "../../services/helpers";
 
 function MainPage() {
@@ -17,7 +15,6 @@ function MainPage() {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [courseDetails, setCourseDetails] = useState({})
   
 
   const handleSearch = async (searchTerm) => {
@@ -43,17 +40,7 @@ function MainPage() {
     setSearchTerm('');
   };
 
-  useEffect(()=>{
-    const getCourseDetails = async () => {
-      const details = {}
-      for (const course of courseList){
-        const response = await fetchCourseLessons(course.ID)
-        details[course.ID] = response
-      }
-      setCourseDetails(details) 
-    }
-    getCourseDetails();
-  }, [])
+
 
   useEffect(() => {
     if (!loading) {
@@ -64,10 +51,6 @@ function MainPage() {
       }, 500);
     }
   }, [loading]);
-
-  useEffect(() => {
-  console.log('Updated courseDetails:', courseDetails);
-}, [courseDetails]);
 
   if (showLoader) {
     return (
