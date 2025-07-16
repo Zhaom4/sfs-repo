@@ -1,6 +1,5 @@
 import NavBar from '../../components/NavBar';
 import styles from './Donations.module.css';
-import { getCursor } from '../../services/cursorManager';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useCursor, useCursorInteractions } from '../../contexts/CursorContext';

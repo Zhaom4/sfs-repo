@@ -7,6 +7,7 @@ import { useCourses } from "../../contexts/CourseContext";
 import Loader from "../../components/Loader";
 import clsx from "clsx";
 import { decodeHtmlEntities } from "../../services/helpers";
+import { fetchSingleCourse, fetchCourseTopics } from "../../services/wordpressapi";
 
 function MainPage() {
   const { courseList, loading } = useCourses();
@@ -16,7 +17,6 @@ function MainPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   
-
   const handleSearch = async (searchTerm) => {
     setIsSearching(true);
     setSearchTerm(searchTerm);
@@ -40,8 +40,6 @@ function MainPage() {
     setSearchTerm('');
   };
 
-
-
   useEffect(() => {
     if (!loading) {
       setFadeOut(true);
@@ -51,6 +49,18 @@ function MainPage() {
       }, 500);
     }
   }, [loading]);
+  
+useEffect(() => {
+  const getCourseDetails = async(courseId) => {
+    const response = await fetchSingleCourse(courseId)
+    console.log(response)
+  }  
+  // Only run when we actually have data
+  if (courseList && courseList.length > 0) {
+    getCourseDetails(courseList[0].ID)
+  }
+
+}, [courseList]);
 
   if (showLoader) {
     return (
@@ -65,7 +75,7 @@ function MainPage() {
 
   // Determine which courses to display
   const coursesToDisplay = searchTerm ? searchResults : courseList;
-
+  console.log('course list', coursesToDisplay)
   return (
     
     <>

@@ -1,3 +1,10 @@
+export const prettierWord = (str) => {
+  if (!str) return "";
+  
+  const words = str.split("_");
+  const temp = words.map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+  return temp.join(" ");
+}
 
 export const getThumbnail = (htmlString) => {
     const tempDiv = document.createElement('div');

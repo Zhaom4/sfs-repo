@@ -1,17 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import fetchAllCourses from '../services/wordpressapi';
+import { fetchSingleCourse } from '../services/wordpressapi';
 
 const CourseContext = createContext();
 
 export const CourseProvider = ({children}) => {
   const [courseList, setCourseList] = useState([]);
+  const [courseDetails, setCourseDetails] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
     const fetchCourses = async() => {
       const response = await fetchAllCourses();
       if (response){
-        setCourseList(response.data.courses);
+        setCourseList(response.data.posts);
       }
       setLoading(false)
     };
@@ -19,9 +21,11 @@ export const CourseProvider = ({children}) => {
     fetchCourses();
   }, [])
 
+
+
   const contextValue = {
     courseList, 
-    loading
+    loading, 
   }
 
   return(
@@ -39,5 +43,9 @@ export const useCourses = () => {
       throw new Error('useCourses must be used within a CourseProvider');
   }
   return context;
+
+}
+
+export const useCourse = () => {
 
 }

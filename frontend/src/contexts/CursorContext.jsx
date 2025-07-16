@@ -77,7 +77,7 @@ export const CursorProvider = ({ children }) => {
       height: 50,
       backgroundColor: "rgba(154, 152, 255, 0)",
       borderWidth: 1,
-      borderColor: "white"
+      borderColor: "rgb(199, 192, 255)"
     }),
     
     click: () => animateCursor({

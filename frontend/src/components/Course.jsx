@@ -6,18 +6,44 @@ import { Link, useLocation } from "react-router-dom";
 import { getThumbnail, decodeHtmlEntities, extractText } from "../services/helpers";
 import { isEnrolled } from "../services/api";
 import ConfirmationModal from "./ConfirmationModal";
+import { useCursor, useCursorInteractions } from "../contexts/CursorContext";
+import { fetchSingleCourse, fetchCourseTopics } from "../services/wordpressapi";
+import { prettierWord } from "../services/helpers";
 
 function Course({course, onFavoriteChange, onEnrolledChange}){
   const [favorite, changeFavorite] = useState(false);
   const [enrolled, setEnrolled] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const location = useLocation();
+  const {hover, resetCursor} = useCursor()
+  const [courseDetails, setCourseDetails] = useState({})
+  const [detailsLoading, setDetailsLoading] = useState(true)
   
   useEffect(() => {
+    const fetchCourseDetails = async() => {
+      try {
+        const details = await fetchSingleCourse(course.ID);
+        setCourseDetails(details.data)
+
+      } catch {
+        throw new Error("couldn't get course details")
+      } finally{
+        setDetailsLoading(false)
+      }
+    }
+
+  const getCourseTopics = async() => {
+    const response = await fetchCourseTopics(course.ID)
+    if (response){
+      console.log('topics: ', response)
+    }
+  }
     if (location.pathname==='/mainpg'){setEnrolled(false)}
     if (location.pathname==='/my-courses'){setEnrolled(true)}
     changeFavorite(isFavorited(course.ID));
 
+    fetchCourseDetails();
+    getCourseTopics();
   }, [course.ID]);
 
   function toggleFavorite(e){
@@ -57,9 +83,22 @@ function Course({course, onFavoriteChange, onEnrolledChange}){
     setShowRemoveModal(false);
   };
 
+  useEffect(()=>{
+      console.log('Course details in course component', courseDetails)
+
+  }, [courseDetails])
+
+  if (detailsLoading){
+    return(
+      <></>
+    )
+  }
   return (
     <>
-      <div className={styles["course"]}>
+      <div className={styles["course"]}
+      onMouseEnter={(hover)}
+      onMouseLeave={(resetCursor)}>
+
         <Link
           to={`/course/${course.ID}`}
           className={styles.courseWrapper}
@@ -67,7 +106,7 @@ function Course({course, onFavoriteChange, onEnrolledChange}){
         >
           <div
             className={styles["course-thumbnail"]}
-            style={{ backgroundImage: `url(${getThumbnail(course.image)})` }}
+            style={{ backgroundImage: `url(${course.thumbnail_url})` }}
           >
             <div className={styles["figcaption"]}>
               <p className={styles["fig-desc"]}>{}</p>
@@ -113,20 +152,20 @@ function Course({course, onFavoriteChange, onEnrolledChange}){
             <div className={styles.left}>
               <div className={styles["desc-container"]}>
                 <div className={styles["desc"]}>
-                  {decodeHtmlEntities(course.title)}
+                  {decodeHtmlEntities(course.post_title)}
                 </div>
               </div>
               <div className={styles["profile-section"]}>
                 <button className={styles["icon"]}></button>
                 <div>
                   <div className={styles["creator"]}>
-                    {extractText(course.instructor, "course-instructor")}
+                    {course.post_author.display_name}
                   </div>
                 </div>
               </div>
             </div>
             <div className={styles.right}>
-              {extractText(course.level, "course-level")}
+              {prettierWord(courseDetails.course_level[0])}
             </div>
           </div>
         </Link>

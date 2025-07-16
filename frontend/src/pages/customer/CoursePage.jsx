@@ -6,10 +6,9 @@ import { useParams } from "react-router-dom";
 import { useCourses } from "../../contexts/CourseContext";
 import { addToMyCourses, isEnrolled, getMyCourses } from "../../services/api";
 import {
-  getThumbnail,
   decodeHtmlEntities,
   getLink,
-  extractText,
+  prettierWord,
 } from "../../services/helpers";
 import {
   addToFavorites,
@@ -19,6 +18,7 @@ import {
 import Loader from "../../components/Loader";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+import { fetchSingleCourse } from "../../services/wordpressapi";
 
 export default function CoursePage() {
   const { id } = useParams();
@@ -30,13 +30,28 @@ export default function CoursePage() {
   const [enrolled, setEnrolled] = useState(false);
   const [showEnrolledMessage, setShowEnrolledMessage] = useState(false);
   const [buttonState, setButtonState] = useState('enroll'); // 'enroll' | 'enrolling' | 'enrolled' | 'open'
+  const [courseDetails, setCourseDetails] = useState({});
+  const [detailsLoading, setDetailsLoading] = useState(true);
+
 
   useEffect(() => {
+    const getCourseDetails = async() => {
+      const response = await fetchSingleCourse(id);
+      try {
+        response ? setCourseDetails(response.data) : {};
+      } catch {
+        throw new Error("couldn't fetch courses")
+      } finally{
+        setDetailsLoading(false)
+      }
+    }
     if (isEnrolled(id)) {
       setEnrolled(true);
       setButtonState('open');
     }
+    getCourseDetails();
   }, [id]);
+
 
   useEffect(() => {
     if (course && isFavorited(course.ID)) {
@@ -93,7 +108,7 @@ export default function CoursePage() {
     }
   };
 
-  if (showLoading) {
+  if (showLoading || detailsLoading) {
     return (
       <div
         className={clsx(styles["loader-container"], fadeOut ? styles.fade : "")}
@@ -124,12 +139,12 @@ export default function CoursePage() {
                   Programming
                 </span>
                 <span className={`${styles.tag} ${styles.tagBeginner}`}>
-                  Beginner Friendly
+                  {prettierWord(courseDetails.course_level[0])}
                 </span>
               </div>
 
               <h1 className={`${styles.title} ${styles.titleGradient}`}>
-                {decodeHtmlEntities(course.title)}
+                {course.post_title}
               </h1>
 
               <p className={styles.description}>{course.author}</p>
@@ -139,7 +154,7 @@ export default function CoursePage() {
             <div className={styles.courseStats}>
               <div className={styles.stat}>
                 <Clock className={styles.statIcon} />
-                <span>12 hours</span>
+                <span>{courseDetails.course_duration[0].hours} hours</span>
               </div>
               <div className={styles.stat}>
                 <Users className={styles.statIcon} />
@@ -158,8 +173,8 @@ export default function CoursePage() {
             <div className={styles.thumbnailContainer}>
               <div className={styles.thumbnail}>
                 <img
-                  src={`${getThumbnail(course.image)}`}
-                  alt="Python Course Thumbnail"
+                  src={`${course.thumbnail_url}`}
+                  alt="Course Thumbnail"
                   className={styles.thumbnailImage}
                 />
 
