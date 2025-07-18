@@ -1,28 +1,31 @@
 import NavBar from "../../components/NavBar";
 import styles from "../customer/CoursePage.module.css";
 import { useEffect, useState } from "react";
-import { Heart, Play, Clock, Users, Star, ExternalLink } from "lucide-react";
+import { Heart, Play, Clock, Users, Star, ExternalLink, User } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useCourses } from "../../contexts/CourseContext";
-import { addToMyCourses, isEnrolled, getMyCourses } from "../../services/api";
+import { useUserContext } from "../../hooks/useUserContext";
 import {
   decodeHtmlEntities,
   getLink,
   prettierWord,
 } from "../../services/helpers";
-import {
-  addToFavorites,
-  removeFromFavorites,
-  isFavorited,
-} from "../../services/api";
 import Loader from "../../components/Loader";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
-import { fetchSingleCourse } from "../../services/wordpressapi";
+import { fetchSingleCourse, fetchCourseTopics } from "../../services/wordpressapi";
 
 export default function CoursePage() {
   const { id } = useParams();
   const { courseList, loading } = useCourses();
+  const { 
+    isEnrolledInCourse, 
+    isCourseFavorited, 
+    enrollInCourse, 
+    addCourseToFavorites, 
+    removeCourseFromFavorites 
+  } = useUserContext();
+  
   const course = courseList.find((c) => String(c.ID) === id);
   const [Favorited, setFavorited] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
@@ -32,7 +35,8 @@ export default function CoursePage() {
   const [buttonState, setButtonState] = useState('enroll'); // 'enroll' | 'enrolling' | 'enrolled' | 'open'
   const [courseDetails, setCourseDetails] = useState({});
   const [detailsLoading, setDetailsLoading] = useState(true);
-
+  const [courseTopics, setCourseTopics] = useState([])
+  const [topicsLoading, setTopicsLoading] = useState(true)
 
   useEffect(() => {
     const getCourseDetails = async() => {
@@ -45,19 +49,36 @@ export default function CoursePage() {
         setDetailsLoading(false)
       }
     }
-    if (isEnrolled(id)) {
+
+    const getCourseTopics = async() => {
+      const response = await fetchCourseTopics(id); 
+      try {
+        response ? setCourseTopics(response.data) : []
+      } catch {
+        throw new Error("couldn't fetch topics")
+      } finally {
+        setTopicsLoading(false)
+      }
+    }
+    
+    if (isEnrolledInCourse(id)) {
       setEnrolled(true);
       setButtonState('open');
     }
     getCourseDetails();
-  }, [id]);
-
+    getCourseTopics();
+  }, [id, isEnrolledInCourse]);
 
   useEffect(() => {
-    if (course && isFavorited(course.ID)) {
+    if (course && isCourseFavorited(course.ID)) {
       setFavorited(true);
     }
-  }, [course]);
+    
+    console.log('course in course page:', course)
+    console.log('course details in course page', courseDetails)
+    console.log('course topics in course page', courseTopics)
+
+  }, [course, isCourseFavorited]);
 
   useEffect(() => {
     if (!loading) {
@@ -68,28 +89,47 @@ export default function CoursePage() {
     }
   }, [loading]);
 
-  const handleEnrollClick = () => {
+  const handleEnrollClick = async () => {
     if (!enrolled) {
       // Start enrollment process
       setButtonState('enrolling');
       
-      // Simulate enrollment process (you might want to make this async)
-      setTimeout(() => {
-        addToMyCourses(id);
-        setEnrolled(true);
-        setShowEnrolledMessage(true);
-        setButtonState('enrolled');
-        
-        // After showing success message, smoothly transition to open course
-        setTimeout(() => {
-          setShowEnrolledMessage(false);
-          setButtonState('open');
-        }, 2000);
-      }, 800); // Small delay to show the loading state
-      
+      try {
+        const success = await enrollInCourse(id);
+        if (success) {
+          setEnrolled(true);
+          setShowEnrolledMessage(true);
+          setButtonState('enrolled');
+          
+          setTimeout(() => {
+            setShowEnrolledMessage(false);
+            setButtonState('open');
+          }, 2000);
+        } else {
+          // Reset button state on failure
+          setButtonState('enroll');
+        }
+      } catch (error) {
+        console.error('Enrollment failed:', error);
+        setButtonState('enroll');
+      }
     } else {
       // If already enrolled, open the course
       window.open(getLink(decodeHtmlEntities(course.title)), '_blank');
+    }
+  };
+
+  const handleFavoriteClick = async () => {
+    try {
+      if (Favorited) {
+        await removeCourseFromFavorites(course.ID);
+        setFavorited(false);
+      } else {
+        await addCourseToFavorites(course.ID);
+        setFavorited(true);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
     }
   };
 
@@ -108,7 +148,31 @@ export default function CoursePage() {
     }
   };
 
-  if (showLoading || detailsLoading) {
+  // Helper function to get course category name
+  const getCourseCategory = () => {
+    if (course?.course_category && course.course_category.length > 0) {
+      return course.course_category[0].name || 'Programming';
+    }
+    return "Existential";
+  };
+
+  // Helper function to get course level with proper formatting
+  const getCourseLevel = () => {
+    if (courseDetails?.course_level && courseDetails.course_level.length > 0) {
+      return prettierWord(courseDetails.course_level[0]);
+    }
+    return 'All Levels';
+  };
+
+  // Helper function to get course duration
+  const getCourseDuration = () => {
+    if (courseDetails?.course_duration && courseDetails.course_duration.length > 0) {
+      return courseDetails.course_duration[0].hours || '10';
+    }
+    return '0';
+  };
+
+  if (showLoading || detailsLoading || topicsLoading) {
     return (
       <div
         className={clsx(styles["loader-container"], fadeOut ? styles.fade : "")}
@@ -136,10 +200,10 @@ export default function CoursePage() {
             <div className={styles.courseInfo}>
               <div className={styles.courseTags}>
                 <span className={`${styles.tag} ${styles.tagProgramming}`}>
-                  Programming
+                  {getCourseCategory()}
                 </span>
                 <span className={`${styles.tag} ${styles.tagBeginner}`}>
-                  {prettierWord(courseDetails.course_level[0])}
+                  {getCourseLevel()}
                 </span>
               </div>
 
@@ -147,14 +211,14 @@ export default function CoursePage() {
                 {course.post_title}
               </h1>
 
-              <p className={styles.description}>{course.author}</p>
+              {/* <p className={styles.description}>{course.post_content?.replace(/<[^>]*>/g, '') || course.author}</p> */}
             </div>
 
             {/* Course Stats */}
             <div className={styles.courseStats}>
               <div className={styles.stat}>
                 <Clock className={styles.statIcon} />
-                <span>{courseDetails.course_duration[0].hours} hours</span>
+                <span>{getCourseDuration()} hours</span>
               </div>
               <div className={styles.stat}>
                 <Users className={styles.statIcon} />
@@ -163,6 +227,26 @@ export default function CoursePage() {
               <div className={styles.stat}>
                 <Star className={`${styles.statIcon} ${styles.starIcon}`} />
                 <span>4.8 (324 reviews)</span>
+              </div>
+            </div>
+
+            {/* Instructor Card */}
+            <div className={styles.instructorCard}>
+              <div className={styles.instructorContent}>
+                <div className={styles.instructorAvatar}>
+                  <div className={styles.instructorImageContainer}>
+                    <User className={styles.instructorPlaceholderIcon} />
+                  </div>
+                </div>
+                <div className={styles.instructorInfo}>
+                  <div className={styles.instructorLabel}>Instructor</div>
+                  <div className={styles.instructorName}>
+                    {course.post_author?.display_name || course.post_author?.user_login || 'Course Instructor'}
+                  </div>
+                  <div className={styles.instructorTitle}>
+                    {course.post_author?.user_email ? course.post_author?.user_email: 'Course Creator'}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -187,12 +271,7 @@ export default function CoursePage() {
 
                 {/* Favorite Button */}
                 <button
-                  onClick={() => {
-                    Favorited
-                      ? removeFromFavorites(course.ID)
-                      : addToFavorites(course.ID);
-                    setFavorited(!Favorited);
-                  }}
+                  onClick={handleFavoriteClick}
                   className={`${styles.thumbnailFavoriteBtn} ${
                     Favorited
                       ? styles.thumbnailFavoriteBtnActive
@@ -285,54 +364,90 @@ export default function CoursePage() {
                 my courses
               </Link>
             </div>
-            {/* Course Features */}
           </div>
         </div>
-
-        {/* Animated Gradient Line */}
-        <div className={styles.gradientLine}>
-          <div className={styles.gradientLineInner}></div>
-        </div>
-        <div className={styles.featuresCard}>
-          <h3 className={styles.featuresTitle}>What you'll learn:</h3>
-          <ul className={styles.featuresList}>
-            <li className={styles.featureItem}>
-              <div
-                className={`${styles.featureDot} ${styles.featureDotGreen}`}
-              ></div>
-              <span className={styles.featureText}>
-                Python syntax and fundamental programming concepts
-              </span>
-            </li>
-            <li className={styles.featureItem}>
-              <div
-                className={`${styles.featureDot} ${styles.featureDotBlue}`}
-              ></div>
-              <span className={styles.featureText}>
-                Building real-world projects and applications
-              </span>
-            </li>
-            <li className={styles.featureItem}>
-              <div
-                className={`${styles.featureDot} ${styles.featureDotGreen}`}
-              ></div>
-              <span className={styles.featureText}>
-                Integration with modern AI development tools
-              </span>
-            </li>
-            <li className={styles.featureItem}>
-              <div
-                className={`${styles.featureDot} ${styles.featureDotBlue}`}
-              ></div>
-              <span className={styles.featureText}>
-                Industry best practices and clean code principles
-              </span>
-            </li>
-          </ul>
-        </div>
       </div>
+       <div className={styles.line}></div>
       
-      
+      {/* Course Contents & Benefits Section */}
+      <section className={styles.mainContent}>
+        <div className={styles.contentContainer}>
+          {/* Left Column - Course Contents */}
+          <div className={styles.leftColumn}>
+            <div className={styles.sectionCard}>
+              <h2 className={styles.sectionTitle}>Course Contents</h2>
+              <div className={styles.topicsList}>
+                {courseTopics.map((topic, index) => (
+                  <div key={topic.ID} className={styles.topicItem}>
+                    <div className={styles.topicNumber}>{index + 1}</div>
+                    <div className={styles.topicContent}>
+                      <h3 className={styles.topicTitle}>{topic.post_title}</h3>
+                      <p className={styles.topicDescription}>{topic.post_content}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Course Benefits & Author */}
+          <div className={styles.rightColumn}>
+            {/* Course Benefits */}
+            <div className={styles.sectionCard}>
+              <h2 className={styles.sectionTitle}>What You'll Learn</h2>
+              <div className={styles.benefitsList}>
+                {courseDetails.course_benefits?.map((benefit, index) => (
+                  <div key={index} className={styles.benefitItem}>
+                    <div className={styles.benefitIcon}>✓</div>
+                    <span className={styles.benefitText}>{benefit}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Course Requirements */}
+            <div className={styles.sectionCard}>
+              <h2 className={styles.sectionTitle}>Prerequisites</h2>
+              <div className={styles.requirementsList}>
+                {courseDetails.course_requirements?.map((requirement, index) => (
+                  <div key={index} className={styles.requirementItem}>
+                    <div className={styles.requirementIcon}>•</div>
+                    <span className={styles.requirementText}>{requirement}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Target Audience */}
+            {courseDetails.course_target_audience.length > 0 &&
+             (<div className={styles.sectionCard}>
+              <h2 className={styles.sectionTitle}>Target Audience</h2>
+              <div className={styles.audienceList}>
+                {courseDetails.course_target_audience?.map((audience, index) => (
+                  <div key={index} className={styles.audienceItem}>
+                    <div className={styles.audienceIcon}>👥</div>
+                    <span className={styles.audienceText}>{audience}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+)}
+            
+            {/* Course Materials */}
+            <div className={styles.sectionCard}>
+              <h2 className={styles.sectionTitle}>Course Materials</h2>
+              <div className={styles.materialsList}>
+                {courseDetails.course_material_includes?.map((material, index) => (
+                  <div key={index} className={styles.materialItem}>
+                    <div className={styles.materialIcon}>📚</div>
+                    <span className={styles.materialText}>{material}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

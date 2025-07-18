@@ -4,13 +4,14 @@ import MainPage from './pages/customer/MainPage'
 import { Routes, Route} from 'react-router-dom'
 import CoursePage from './pages/customer/CoursePage'
 import Favorites from './pages/customer/Favorites'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { CourseProvider } from './contexts/CourseContext'
 import MyCourses from './pages/customer/MyCourses'
 import Donations from './pages/customer/Donations'
 import { CursorProvider } from './contexts/CursorContext'
-import gsap from 'gsap'
-import { setCursor, getCursor } from './services/cursorManager'
+import SignupPage from './pages/SignupPage'
+import { UserProvider } from './hooks/useUserContext'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
   const cursor = useRef();
@@ -32,18 +33,37 @@ function App() {
     };
   }, []);
   return (
+    <UserProvider>
     <CursorProvider>
     <CourseProvider>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
-        <Route path="/mainpg" element={<MainPage />} />
-        <Route path="/course/:id" element={<CoursePage />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path='/my-courses' element={<MyCourses/>}/>
+        <Route path="/mainpg" element={
+          <ProtectedRoute>
+            <MainPage />
+            </ProtectedRoute>
+          } />
+        <Route path="/course/:id" element={
+          <ProtectedRoute>
+          <CoursePage />
+          </ProtectedRoute>}
+           />
+        <Route path="/favorites" element={
+          <ProtectedRoute>
+          <Favorites />
+          </ProtectedRoute>
+          } />
+        <Route path='/my-courses' element={
+          <ProtectedRoute>
+          <MyCourses/>
+          </ProtectedRoute>
+          }/>
         <Route path='/donate' element={<Donations/>}/>
+        <Route path='/signup' element={<SignupPage/>}/>
       </Routes>
     </CourseProvider>
     </CursorProvider>
+    </UserProvider>
   );
 }
 

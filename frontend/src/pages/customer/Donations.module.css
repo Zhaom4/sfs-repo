@@ -1,3 +1,60 @@
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: Space Mono, monospace;
+
+  --radius: 0.625rem;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.269 0 0);
+  --popover-foreground: oklch(0 0 0);
+  --primary: oklch(0.9387 0.0324 311.7455);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0 0 0);
+  --secondary-foreground: oklch(0.9885 0.0054 274.9676);
+  --muted: oklch(0.1149 0 0);
+  --muted-foreground: oklch(0.9006 0 0);
+  --accent: oklch(0.3922 0.0201 289.2586);
+  --accent-foreground: oklch(0.9329 0.0469 314.9922);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.275 0 0);
+  --input: oklch(0.325 0 0);
+  --ring: oklch(0.556 0 0);
+}
+
+body {
+  letter-spacing: var(--tracking-normal);
+}
+
 :root{
   --light-purple:rgb(247, 233, 255);
 }
@@ -332,3 +389,157 @@ hr{
   gap: 1.5rem;
 }
 
+
+/* Updated CSS for the section */
+/* Updated CSS for the section */
+.body1 {
+  margin-top: 6rem;
+  padding: 0 2.5rem;
+  /* background: var(--background); */
+}
+
+.body1 .header1 {
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.stat-value {
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: var(--primary);
+  font-family: var(--font-mono);
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: var(--muted-foreground);
+  margin-top: 0.5rem;
+}
+
+.breakdown-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.breakdown-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.breakdown-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+.progress-container {
+  height: 8px;
+  background: var(--muted);
+  border-radius: 4px;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, oklch(0.8874 0.0579 295.0151), oklch(0.6668 0.1061 299.7210));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.percentage {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-align: right;
+}
+
+.impact-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.impact-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.impact-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.impact-stat {
+  text-align: center;
+}
+
+.impact-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--primary);
+  font-family: var(--font-mono);
+}
+
+.impact-label {
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  margin-top: 0.5rem;
+}
+
+/* GSAP animations */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@media (max-width: 768px) {
+  .breakdown-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .impact-stats {
+    flex-direction: column;
+  }
+  
+  .stat-value {
+    font-size: 2.5rem;
+  }
+  
+  .body1 .header1 {
+    font-size: 2rem;
+  }
+}

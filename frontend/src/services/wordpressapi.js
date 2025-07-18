@@ -4,7 +4,6 @@ const fetchAllCourses = async () => {
   
   // Create Basic Auth credentials (same as Postman's Basic Auth)
   const credentials = btoa(`${APIkey}:${secretKey}`);
-  console.log('Making API call to Tutor LMS...');
 
   try {
     const response = await fetch('https://wordpress-1491895-5691655.cloudwaysapps.com/wp-json/tutor/v1/courses?per_page=100', {
@@ -22,7 +21,6 @@ const fetchAllCourses = async () => {
     }
     
     const courses = await response.json();
-    console.log('Courses received:', courses);
     return courses;
     
   } catch (error) {
@@ -50,7 +48,6 @@ export const fetchSingleCourse = async(courseId) => {
     }
     
     const coursesDetails = await response.json();
-    console.log('Course details received:', coursesDetails);
     return coursesDetails;
     
 }
