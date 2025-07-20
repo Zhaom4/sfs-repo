@@ -1,16 +1,17 @@
+// Updated MainPage.jsx with sign-in only modal logic
+
 import NavBar from "../../components/NavBar";
 import styles from "../customer/MainPage.module.css";
 import Sidebar from "../../components/Sidebar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Course from "../../components/Course";
 import { useCourses } from "../../contexts/CourseContext";
 import Loader from "../../components/Loader";
 import clsx from "clsx";
 import { decodeHtmlEntities } from "../../services/helpers";
-import { fetchSingleCourse } from "../../services/wordpressapi";
-import { supabase } from '../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../hooks/useUserContext';
+import WelcomeModal from "../../components/WelcomeModal";
 
 function MainPage() {
   const { courseList, loading } = useCourses();
@@ -19,7 +20,12 @@ function MainPage() {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const navigate = useNavigate();
+  
+  // Track if we've already shown the modal for this session
+  const hasShownModalThisSession = useRef(false);
+  const lastUserId = useRef(null);
   
   const {
     user,
@@ -28,16 +34,54 @@ function MainPage() {
     favoritedCourses,
     loading: userLoading,
     error,
-    enrollInCourse,
-    unenrollFromCourse,
-    addCourseToFavorites,
-    removeCourseFromFavorites,
-    isEnrolledInCourse,
-    isCourseFavorited,
-    getCourseProgress,
-    updateCourseProgress,
     clearError
   } = useUserContext();
+
+  // Show welcome modal ONLY on fresh sign-in
+  useEffect(() => {
+    // Only proceed if we have user data and it's not loading
+    if (!user || !userProfile || userLoading) {
+      return;
+    }
+
+    // Check if this is a new user sign-in (different from last user)
+    const isNewSignIn = lastUserId.current !== user.id;
+    
+    // Update the last user ID
+    lastUserId.current = user.id;
+
+    if (isNewSignIn && !hasShownModalThisSession.current) {
+      const hideWelcome = localStorage.getItem('hideWelcomeModal');
+      
+      if (!hideWelcome) {
+        console.log('🎉 Showing welcome modal for fresh sign-in');
+        
+        // Mark that we've shown the modal this session
+        hasShownModalThisSession.current = true;
+        
+        // Add a small delay for better UX
+        const timer = setTimeout(() => {
+          setShowWelcomeModal(true);
+        }, 800);
+        
+        return () => clearTimeout(timer);
+      } else {
+        hasShownModalThisSession.current = true;
+      }
+    } else if (!isNewSignIn) {
+      console.log('🔄 Same user - not showing welcome modal (page reload)');
+    }
+  }, [user, userProfile, userLoading]);
+
+  // Reset session tracking when user logs out
+  useEffect(() => {
+    if (!user) {
+      console.log('👋 User logged out - resetting session tracking');
+      hasShownModalThisSession.current = false;
+      lastUserId.current = null;
+      setShowWelcomeModal(false);
+    }
+  }, [user]);
 
   const handleSearch = async (searchTerm) => {
     setIsSearching(true);
@@ -45,7 +89,7 @@ function MainPage() {
     
     try {
       const filteredCourses = courseList.filter(course => 
-        decodeHtmlEntities(course.title)?.toLowerCase().includes(searchTerm.toLowerCase())
+        decodeHtmlEntities(course.post_title)?.toLowerCase().includes(searchTerm.toLowerCase())
       );
       
       setSearchResults(filteredCourses);
@@ -61,68 +105,13 @@ function MainPage() {
     setSearchTerm('');
   };
 
-  // Handle course enrollment
-  const handleEnrollment = async (courseId) => {
-    if (!user) {
-      // Redirect to login if not authenticated
-      navigate('/login');
-      return;
-    }
-
-    try {
-      if (isEnrolledInCourse(courseId)) {
-        const success = await unenrollFromCourse(courseId);
-        if (!success) {
-          console.error('Failed to unenroll from course');
-        }
-      } else {
-        const success = await enrollInCourse(courseId);
-        if (!success) {
-          console.error('Failed to enroll in course');
-        }
-      }
-    } catch (error) {
-      console.error('Error handling enrollment:', error);
-    }
+  const handleCloseWelcomeModal = () => {
+    setShowWelcomeModal(false);
   };
 
-  // Handle course favorites
-  const handleFavorite = async (courseId) => {
-    if (!user) {
-      // Redirect to login if not authenticated
-      navigate('/login');
-      return;
-    }
-
-    try {
-      if (isCourseFavorited(courseId)) {
-        const success = await removeCourseFromFavorites(courseId);
-        if (!success) {
-          console.error('Failed to remove course from favorites');
-        }
-      } else {
-        const success = await addCourseToFavorites(courseId);
-        if (!success) {
-          console.error('Failed to add course to favorites');
-        }
-      }
-    } catch (error) {
-      console.error('Error handling favorite:', error);
-    }
-  };
-
-  // Handle course progress update
-  const handleProgressUpdate = async (courseId, progress) => {
-    if (!user) return;
-
-    try {
-      const success = await updateCourseProgress(courseId, progress);
-      if (!success) {
-        console.error('Failed to update course progress');
-      }
-    } catch (error) {
-      console.error('Error updating progress:', error);
-    }
+  // Manual trigger for welcome modal (from mini banner)
+  const handleShowWelcomeModal = () => {
+    setShowWelcomeModal(true);
   };
 
   // Clear any errors when component mounts
@@ -130,33 +119,18 @@ function MainPage() {
     if (error) {
       clearError();
     }
-  }, []);
+  }, [error, clearError]);
 
   useEffect(() => {
-    // Debug logging to see what's happening
-    console.log('Loading states:', { loading, userLoading });
-    
     if (!loading) {
       setFadeOut(true);
       setTimeout(() => {
         setShowLoader(false);
       }, 500);
     }
-  }, [loading, userLoading]);
-  
-  useEffect(() => {
-    const getCourseDetails = async(courseId) => {
-      const response = await fetchSingleCourse(courseId);
-      console.log(response);
-    };  
-    
-    // Only run when we actually have data
-    if (courseList && courseList.length > 0) {
-      getCourseDetails(courseList[0].ID);
-    }
-  }, [courseList]);
+  }, [loading]);
 
-  // Show loader while courses or user data is loading
+  // Show loader while courses are loading
   if (showLoader) {
     return (
       <div className={clsx(
@@ -168,45 +142,34 @@ function MainPage() {
     );
   }
 
-  // Determine which courses to display
   const coursesToDisplay = searchTerm ? searchResults : courseList;
-
-  // Enhance courses with user-specific data
-  const enhancedCourses = coursesToDisplay.map(course => ({
-    ...course,
-    isEnrolled: user ? isEnrolledInCourse(course.ID) : false,
-    isFavorited: user ? isCourseFavorited(course.ID) : false,
-    progress: user ? getCourseProgress(course.ID) : 0,
-    userActions: {
-      onEnroll: () => handleEnrollment(course.ID),
-      onFavorite: () => handleFavorite(course.ID),
-      onProgressUpdate: (progress) => handleProgressUpdate(course.ID, progress)
-    }
-  }));
 
   return (
     <>
       <NavBar onSearch={handleSearch} />
       <Sidebar />
+      
+      {/* Welcome Modal - Only shows on fresh sign-in */}
+      <WelcomeModal
+        isOpen={showWelcomeModal}
+        onClose={handleCloseWelcomeModal}
+        userProfile={userProfile}
+        enrolledCount={enrolledCourses?.length || 0}
+        favoritesCount={favoritedCourses?.length || 0}
+      />
+      
       <div className={styles["container"]}>
         <section className={styles["main-section"]}>
           {/* Display error message if there's an error */}
           {error && (
             <div className={styles["error-message"]}>
-              <p>Error: {error}</p>
+              <p>⚠️ {error}</p>
               <button onClick={clearError} className={styles["clear-error-btn"]}>
-                Dismiss
+                ✕ Dismiss
               </button>
             </div>
           )}
           
-          {/* Display user greeting if logged in */}
-          {user && userProfile && (
-            <div className={styles["user-greeting"]}>
-              <h2>Welcome back, {userProfile.display_name || userProfile.email}!</h2>
-              <p>You're enrolled in {enrolledCourses.length} courses and have {favoritedCourses.length} favorites.</p>
-            </div>
-          )}
           
           {isSearching ? (
             <div className={styles["search-loading"]}>
@@ -214,14 +177,12 @@ function MainPage() {
             </div>
           ) : (
             <>
-              {enhancedCourses.length > 0 ? (
-                enhancedCourses.map((course) => {
+              {coursesToDisplay && coursesToDisplay.length > 0 ? (
+                coursesToDisplay.map((course) => {
                   return (
                     <Course 
                       key={course.ID} 
-                      course={course} 
-                      ind={enhancedCourses.indexOf(course)}
-                      isAuthenticated={!!user}
+                      course={course}
                     />
                   );
                 })

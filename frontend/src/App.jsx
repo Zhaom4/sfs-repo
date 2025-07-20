@@ -10,7 +10,7 @@ import MyCourses from './pages/customer/MyCourses'
 import Donations from './pages/customer/Donations'
 import { CursorProvider } from './contexts/CursorContext'
 import SignupPage from './pages/SignupPage'
-import { UserProvider } from './hooks/useUserContext'
+import { UserProvider } from './contexts/UserContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {

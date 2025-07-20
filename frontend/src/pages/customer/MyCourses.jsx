@@ -36,7 +36,7 @@ function MyCourses(){
 
   // Redirect to login if not authenticated
   useEffect(() => {
-    console.log(enrolledCourses)
+    console.log('📊 Enrolled courses data:', enrolledCourses);
     if (!userLoading && !user) {
       navigate('/login');
     }
@@ -48,7 +48,7 @@ function MyCourses(){
     
     try {
       const filteredCourses = myCourses.filter(course => 
-        decodeHtmlEntities(course.title)?.toLowerCase().includes(searchTerm.toLowerCase())
+        decodeHtmlEntities(course.post_title)?.toLowerCase().includes(searchTerm.toLowerCase())
       );
       
       setSearchResults(filteredCourses);
@@ -103,16 +103,45 @@ function MyCourses(){
     }
   };
 
-  // Get enrolled courses with full course data
+  // Get enrolled courses with full course data - FIXED
   const getEnrolledCoursesWithData = () => {
-    if (!enrolledCourses || !courseList) return [];
+    if (!enrolledCourses || !courseList) {
+      console.log('❌ Missing data:', { 
+        enrolledCourses: !!enrolledCourses, 
+        courseList: !!courseList 
+      });
+      return [];
+    }
     
-    return enrolledCourses.map(enrolledCourse => {
-      const fullCourse = courseList.find(course => course.ID === enrolledCourse.course_id);
-      return fullCourse ? {
+    console.log('🔍 Debugging enrollment data:');
+    console.log('📝 Enrolled courses:', enrolledCourses.map(c => ({ 
+      id: c.course_id, 
+      type: typeof c.course_id,
+      progress: c.progress 
+    })));
+    console.log('📚 Course list sample:', courseList.slice(0, 3).map(c => ({ 
+      id: c.ID, 
+      type: typeof c.ID,
+      title: c.post_title 
+    })));
+    
+    const coursesWithData = enrolledCourses.map(enrolledCourse => {
+      // FIXED: Convert both to strings for comparison
+      const fullCourse = courseList.find(course => 
+        String(course.ID) === String(enrolledCourse.course_id)
+      );
+      
+      if (!fullCourse) {
+        console.log(`❌ No course found for ID: ${enrolledCourse.course_id} (${typeof enrolledCourse.course_id})`);
+        return null;
+      }
+      
+      console.log(`✅ Found course: ${fullCourse.post_title} (ID: ${fullCourse.ID})`);
+      
+      return {
         ...fullCourse,
         enrollmentData: enrolledCourse,
-        progress: enrolledCourse.progress,
+        progress: enrolledCourse.progress || 0,
         enrolledAt: enrolledCourse.enrolled_at,
         isEnrolled: true,
         isFavorited: isCourseFavorited(enrolledCourse.course_id),
@@ -121,17 +150,28 @@ function MyCourses(){
           onFavorite: () => handleFavorite(enrolledCourse.course_id),
           onProgressUpdate: (progress) => handleProgressUpdate(enrolledCourse.course_id, progress)
         }
-      } : null;
+      };
     }).filter(Boolean);
+    
+    console.log('🎯 Final courses with data:', coursesWithData.length);
+    return coursesWithData;
   };
 
   // Update myCourses when enrolledCourses or courseList changes
   useEffect(() => {
+    console.log('🔄 Updating myCourses...');
     if (enrolledCourses && courseList) {
       const coursesWithData = getEnrolledCoursesWithData();
       setMyCourses(coursesWithData);
+      console.log('✅ Set myCourses:', coursesWithData.length);
+    } else {
+      console.log('⏳ Waiting for data...', { 
+        hasEnrolledCourses: !!enrolledCourses, 
+        hasCourseList: !!courseList 
+      });
+      setMyCourses([]);
     }
-  }, [enrolledCourses, courseList]);
+  }, [enrolledCourses, courseList, favoritedCourses]); // Added favoritedCourses dependency
 
   // Clear any errors
   useEffect(() => {
@@ -159,19 +199,28 @@ function MyCourses(){
 
   const coursesToDisplay = searchTerm ? searchResults : myCourses;
   
+  console.log('🎬 Rendering MyCourses:', {
+    enrolledCoursesCount: enrolledCourses?.length || 0,
+    myCoursesCount: myCourses.length,
+    coursesToDisplayCount: coursesToDisplay.length,
+    searchTerm
+  });
+  
   return (
     <>
       <NavBar onSearch={handleSearch} />
-      
+
       {/* Display error message if there's an error */}
       {error && (
         <div className={styles["error-message"]}>
-          <p>Error: {error}</p>
+          <p>⚠️ {error}</p>
           <button onClick={clearError} className={styles["clear-error-btn"]}>
-            Dismiss
+            ✕ Dismiss
           </button>
         </div>
       )}
+
+     
       
       {myCourses.length > 0 ? (
         <section className={styles['main-section']}>
