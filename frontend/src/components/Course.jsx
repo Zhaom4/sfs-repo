@@ -88,7 +88,7 @@ function Course({ course, onFavoriteChange, onEnrolledChange, showProgress = fal
         }
         
         // Optionally refresh user data
-        await refreshUserData();
+        // await refreshUserData();
       }
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -169,7 +169,7 @@ function Course({ course, onFavoriteChange, onEnrolledChange, showProgress = fal
 
   return (
     <>
-      <div 
+      <div
         className={styles["course"]}
         onMouseEnter={hover}
         onMouseLeave={resetCursor}
@@ -185,11 +185,14 @@ function Course({ course, onFavoriteChange, onEnrolledChange, showProgress = fal
           >
             <div className={styles["figcaption"]}>
               <p className={styles["fig-desc"]}></p>
-              
+
               {/* Show different buttons based on enrollment status */}
               {isEnrolled ? (
                 <button
-                  className={clsx(styles["remove"], actionLoading && styles["loading"])}
+                  className={clsx(
+                    styles["remove"],
+                    actionLoading && styles["loading"]
+                  )}
                   onClick={handleRemoveClick}
                   type="button"
                   title="Remove from enrolled courses"
@@ -213,31 +216,31 @@ function Course({ course, onFavoriteChange, onEnrolledChange, showProgress = fal
                 <>
                   {/* Favorite button */}
                   <button
-                    className={clsx(styles["favorite"], actionLoading && styles["loading"])}
+                    className={clsx(
+                      styles["favorite"],
+                      actionLoading && styles["loading"]
+                    )}
                     onClick={handleFavoriteToggle}
                     type="button"
-                    title={isFavorited ? "Remove from favorites" : "Add to favorites"}
+                    title={
+                      isFavorited ? "Remove from favorites" : "Add to favorites"
+                    }
                     disabled={actionLoading}
                   >
-                    {actionLoading ? (
-                      <div className={styles["spinner"]}>⟳</div>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24px"
-                        viewBox="0 -960 960 960"
-                        width="24px"
-                        fill={isFavorited ? "#FFD700" : "none"}
-                        stroke="#FFFFFF"
-                        strokeWidth="60"
-                      >
-                        <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Z" />
-                      </svg>
-                    )}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill={isFavorited ? "#f7edff" : "none"}
+                      stroke="#f7edff"
+                      strokeWidth={"80"}
+                    >
+                      <path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Z" />
+                    </svg>
                   </button>
-                  
+
                   {/* Enroll button - only show if not enrolled */}
-                  
                 </>
               )}
             </div>
@@ -260,9 +263,9 @@ function Course({ course, onFavoriteChange, onEnrolledChange, showProgress = fal
               </div>
             </div>
             <div className={styles.right}>
-              {courseDetails.course_level && courseDetails.course_level[0] && 
-                prettierWord(courseDetails.course_level[0])
-              }
+              {courseDetails.course_level &&
+                courseDetails.course_level[0] &&
+                prettierWord(courseDetails.course_level[0])}
               {showProgress && isEnrolled && (
                 <div className={styles["progress-info"]}>
                   <span>Progress: {course.progress || 0}%</span>

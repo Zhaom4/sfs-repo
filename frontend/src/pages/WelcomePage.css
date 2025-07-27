@@ -1,6 +1,8 @@
 :root {
   --background-color: #FFFDFA;
   --orange: #ff845e;
+  --blue: #3589e8;
+  --dark-blue: #113197;
 }
 
 @font-face {
@@ -60,12 +62,13 @@ body {
 .t {
   margin-top: -30px;
   margin-left: 10%;
+  font-weight: 800;
 }
 
 .title {
-  font-weight: 700;
+  font-family: Satoshi;
   font-size: 70px;
-  color: #243B88;
+  color: var(--dark-blue);
 }
 
 /* Add the missing t1 class */
@@ -95,35 +98,39 @@ body {
 
 .section .right {
   flex: 1;
-  background-color: #243B88;
+  background-color: var(--dark-blue);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .desc {
+  margin-top: 2rem;
+  width: 100%;
   font-family: inter;
   font-size: 15px;
   width: 50%;
-  color: #333;
+  color: var(--orange);
+  opacity: 0.8;
 }
 
 .signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 400px;
+  width: 370px;
   font-family: Satoshi;
 }
 
 .signup-card {
+  max-height: 600px;
   background-color: white;
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 600px;
-  max-height: 360px;
+  box-shadow: 2px 2px 10px rgb(119, 126, 227);
 }
 
 .signup-card h2 {

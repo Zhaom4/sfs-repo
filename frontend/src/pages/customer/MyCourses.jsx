@@ -224,10 +224,10 @@ function MyCourses(){
       
       {myCourses.length > 0 ? (
         <section className={styles['main-section']}>
-          <div className={styles['header']}>
+          {/* <div className={styles['header']}>
             <h2>My Enrolled Courses ({myCourses.length})</h2>
           </div>
-          
+           */}
           {isSearching ? (
             <div className={styles["search-loading"]}>
               <p>Searching...</p>

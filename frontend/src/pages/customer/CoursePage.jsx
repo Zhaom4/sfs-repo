@@ -90,34 +90,38 @@ export default function CoursePage() {
   }, [loading]);
 
   const handleEnrollClick = async () => {
-    if (!enrolled) {
-      // Start enrollment process
-      setButtonState('enrolling');
-      
-      try {
-        const success = await enrollInCourse(id);
-        if (success) {
-          setEnrolled(true);
-          setShowEnrolledMessage(true);
-          setButtonState('enrolled');
-          
-          setTimeout(() => {
-            setShowEnrolledMessage(false);
-            setButtonState('open');
-          }, 2000);
-        } else {
-          // Reset button state on failure
-          setButtonState('enroll');
-        }
-      } catch (error) {
-        console.error('Enrollment failed:', error);
+  if (!enrolled) {
+    // Start enrollment process
+    setButtonState('enrolling');
+    
+    try {
+      const success = await enrollInCourse(id);
+      if (success) {
+        setEnrolled(true);
+        setShowEnrolledMessage(true);
+        setButtonState('enrolled');
+        
+        setTimeout(() => {
+          setShowEnrolledMessage(false);
+          setButtonState('open');
+        }, 2000);
+      } else {
         setButtonState('enroll');
       }
-    } else {
-      // If already enrolled, open the course
-      window.open(getLink(decodeHtmlEntities(course.title)), '_blank');
+    } catch (error) {
+      console.error('Enrollment failed:', error);
+      setButtonState('enroll');
     }
-  };
+  } else {
+    // Wait for topics to load before opening course
+    if (topicsLoading) {
+      console.log('Topics still loading, please wait...');
+      return;
+    }
+    
+    window.open(getLink(decodeHtmlEntities(course.title), courseTopics), '_blank');
+  }
+};
 
   const handleFavoriteClick = async () => {
     try {

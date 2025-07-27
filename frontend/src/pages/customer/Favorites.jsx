@@ -159,7 +159,7 @@ function Favorites() {
 
       {favoriteCourses.length > 0 ? (
         <section className={styles["main-section"]}>
-          <div className={styles['header']}>
+          {/* <div className={styles['header']}>
             <h2>My Favorite Courses ({favoriteCourses.length})</h2>
             <button 
               onClick={refreshUserData}
@@ -168,7 +168,7 @@ function Favorites() {
             >
               🔄 Refresh
             </button>
-          </div>
+          </div> */}
           
           {isSearching ? (
             <div className={styles["search-loading"]}>

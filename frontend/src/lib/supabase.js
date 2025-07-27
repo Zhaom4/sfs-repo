@@ -8,11 +8,11 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    storage: window.localStorage, // Explicitly use localStorage
+    storage: window.localStorage,
     storageKey: 'supabase.auth.token',
-    flowType: 'pkce'
+    flowType: 'pkce', // Explicitly set PKCE flow
+    debug: process.env.NODE_ENV === 'development' // Enable debug in development
   },
-  // Add retry logic for network issues
   global: {
     headers: {
       'x-application-name': 'students-for-students'

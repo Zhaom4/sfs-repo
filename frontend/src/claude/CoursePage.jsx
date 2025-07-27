@@ -54,6 +54,7 @@ export default function CoursePage() {
       const response = await fetchCourseTopics(id); 
       try {
         response ? setCourseTopics(response.data) : []
+        console.log("THIS!!!!", response.data)
       } catch {
         throw new Error("couldn't fetch topics")
       } finally {

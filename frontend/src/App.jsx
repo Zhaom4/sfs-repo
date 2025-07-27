@@ -12,6 +12,8 @@ import { CursorProvider } from './contexts/CursorContext'
 import SignupPage from './pages/SignupPage'
 import { UserProvider } from './contexts/UserContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import ResetPasswordPage from './pages/ResetPasswordPage'
+import Settings from './pages/customer/Settings'
 
 function App() {
   const cursor = useRef();
@@ -58,8 +60,11 @@ function App() {
           <MyCourses/>
           </ProtectedRoute>
           }/>
+        <Route path='/settings' element={<Settings/>}/>
         <Route path='/donate' element={<Donations/>}/>
         <Route path='/signup' element={<SignupPage/>}/>
+        <Route path='/reset-password' element={<ResetPasswordPage/>}/>
+
       </Routes>
     </CourseProvider>
     </CursorProvider>

@@ -22,7 +22,7 @@ export const decodeHtmlEntities = (text) => {
   };
 
 
-export const getLink = (htmlString) => {
+export const getLink = (htmlString, courseTopics) => {
   const s = htmlString
     .toLowerCase()
     .trim()
@@ -30,7 +30,7 @@ export const getLink = (htmlString) => {
     .replace(/\s+/g, "-") 
     .replace(/-+/g, "-");    
 
-  return `https://studentsforstudents.fast-page.org/courses/${s}/`
+  return `https://wordpress-1494981-5707436.cloudwaysapps.com/courses/${s}/lessons/${courseTopics[1].post_name}`
   
 }
 

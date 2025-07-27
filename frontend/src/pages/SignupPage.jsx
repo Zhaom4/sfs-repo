@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { supabase } from '../lib/supabase';
-import { useNavigate } from 'react-router-dom';
-import styles from './SignupPage.module.css';
+import React, { useState } from "react";
+import { supabase } from "../lib/supabase";
+import { useNavigate } from "react-router-dom";
+import styles from "./SignupPage.module.css";
 
 const SignupPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
 
     try {
       const { data, error } = await supabase.auth.signUp({
@@ -26,26 +26,26 @@ const SignupPage = () => {
           data: {
             full_name: fullName,
           },
-          emailRedirectTo: `${window.location.origin}/mainpg`
-        }
+          emailRedirectTo: `${window.location.origin}/mainpg`,
+        },
       });
 
       if (error) {
         setError(error.message);
       } else {
-        setMessage('Please check your email for a confirmation link!');
+        setMessage("Please check your email for a confirmation link!");
         // Clear form
-        setEmail('');
-        setPassword('');
-        setFullName('');
-        
+        setEmail("");
+        setPassword("");
+        setFullName("");
+
         // Redirect to welcome page after 3 seconds
         setTimeout(() => {
-          navigate('/');
+          navigate("/");
         }, 3000);
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -53,113 +53,112 @@ const SignupPage = () => {
 
   const handleSignInWithGoogle = async () => {
     setLoading(true);
-    setError('');
-    
+    setError("");
+
     try {
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/mainpg`
-        }
+          redirectTo: `${window.location.origin}/mainpg`,
+        },
       });
-      
+
       if (error) {
         setError(error.message);
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleBackToSignIn = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.signupCard}>
-        <h2>Create your account</h2>
+        <div className={styles.info}>
+        <h1>Sign Up</h1>
+
+        {message && <div className={styles.successMessage}>{message}</div>}
+
+        {error && <div className={styles.errorMessage}>{error}</div>}
+
+        <div className={styles.sectionHeader}>Sign up with Open account</div>
+
+        <button
+          onClick={handleSignInWithGoogle}
+          disabled={loading}
+          className={styles.googleButton}
+        >
+          Google
+        </button>
+        <div className={styles.divider}>
+          <span>or</span>
+        </div>
         
-        {message && (
-          <div className={styles.successMessage}>
-            {message}
-          </div>
-        )}
-        
-        {error && (
-          <div className={styles.errorMessage}>
-            {error}
-          </div>
-        )}
-        
+        <span className={styles.sectionHeader}>Continue with email address</span>
+      
+
         <form onSubmit={handleSignUp}>
           <div className={styles.inputGroup}>
-            <label htmlFor="fullName">Full Name</label>
+            <label htmlFor="fullName"></label>
             <input
               id="fullName"
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="Enter your full name"
+              placeholder="full name"
               required
             />
           </div>
-          
+
           <div className={styles.inputGroup}>
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email"></label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder="email"
               required
             />
           </div>
-          
+
           <div className={styles.inputGroup}>
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password"></label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Create a password"
+              placeholder="password"
               required
               minLength={6}
             />
           </div>
-          
-          <button 
-            type="submit" 
+
+          <button
+            type="submit"
             disabled={loading}
             className={styles.signupButton}
           >
-            {loading ? 'Creating Account...' : 'Sign Up'}
+            {loading ? "Creating Account..." : "Start learning"}
           </button>
         </form>
-        
-        <div className={styles.divider}>
-          <span>or</span>
-        </div>
-        
-        <button 
-          onClick={handleSignInWithGoogle}
-          disabled={loading}
-          className={styles.googleButton}
-        >
-          Continue with Google
-        </button>
-        
+
         <p className={styles.signinLink}>
-          Already have an account? 
+          Already have an account?
           <span onClick={handleBackToSignIn} className={styles.linkText}>
             Sign in
           </span>
         </p>
       </div>
+      </div>
+      <div className={styles.rhs}></div>
     </div>
   );
 };

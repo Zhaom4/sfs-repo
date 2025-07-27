@@ -173,7 +173,6 @@ function MainPage() {
           
           {isSearching ? (
             <div className={styles["search-loading"]}>
-              <Loader />
             </div>
           ) : (
             <>
