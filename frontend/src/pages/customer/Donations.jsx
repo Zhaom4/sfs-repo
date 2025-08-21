@@ -206,7 +206,9 @@ function Donations(){
             <div className={styles.line}></div>
             <div className={styles.plus}>+</div>
           </div>
-          
+         
+          <div className="calendly-inline-widget" data-url="https://calendly.com/xueyumi13/30min"></div>
+          <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
         </div>
       </div>
     </div>

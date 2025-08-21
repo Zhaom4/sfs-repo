@@ -14,6 +14,7 @@ import { UserProvider } from './contexts/UserContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import Settings from './pages/customer/Settings'
+import Tutor from './pages/customer/Tutoring'
 
 function App() {
   const cursor = useRef();
@@ -63,6 +64,7 @@ function App() {
         <Route path='/settings' element={<Settings/>}/>
         <Route path='/donate' element={<Donations/>}/>
         <Route path='/signup' element={<SignupPage/>}/>
+        <Route path='/tutoring' element={<Tutor/>}/>
         <Route path='/reset-password' element={<ResetPasswordPage/>}/>
 
       </Routes>

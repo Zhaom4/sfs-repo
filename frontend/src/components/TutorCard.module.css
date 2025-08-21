@@ -1,0 +1,307 @@
+/* TutorCard.module.css */
+
+.tutorCard {
+  margin-bottom: 1rem;
+  padding: 16px;
+  /* background: linear-gradient(135deg, rgba(139, 197, 255, 0.12) 0%, rgba(181, 189, 253, 0.08) 100%); */
+  border: 1px solid rgba(139, 197, 255, 0.25);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.init{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tutorCard:hover {
+  background: linear-gradient(135deg, rgba(139, 197, 255, 0.18) 0%, rgba(181, 218, 253, 0.094) 100%);
+  border-color: rgba(139, 185, 255, 0.678);
+  transform: translateY(-2px);
+  /* box-shadow: 0 8px 32px rgba(139, 197, 255, 0.2); */
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon {
+  all: unset;
+  aspect-ratio: 1/1;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(139, 197, 255, 0.4) 0%, rgba(196, 181, 253, 0.3) 100%);
+  border: 2px solid rgba(139, 197, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.icon:hover {
+  background: linear-gradient(135deg, rgba(139, 197, 255, 0.5) 0%, rgba(196, 181, 253, 0.4) 100%);
+  border-color: rgba(139, 197, 255, 0.7);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.creator {
+  color: rgb(240, 245, 250);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Inter, sans-serif;
+}
+
+.email {
+  color: rgb(190, 195, 201);
+  font-size: 13px;
+  font-weight: 400;
+  font-family: Inter, sans-serif;
+}
+
+.date {
+  color: rgba(213, 202, 255, 0.921);
+  font-size: 11px;
+  font-family: Inter, sans-serif;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.scheduleBtn {
+  all: unset;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, rgba(139, 197, 255, 0.25) 0%, rgba(196, 181, 253, 0.2) 100%);
+  border: 1px solid rgba(139, 197, 255, 0.3);
+  border-radius: 12px;
+  color: rgb(240, 245, 250);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Inter, sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.scheduleBtn:hover {
+  background: linear-gradient(135deg, rgba(139, 197, 255, 0.35) 0%, rgba(196, 181, 253, 0.3) 100%);
+  border-color: rgba(139, 197, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(139, 197, 255, 0.2);
+}
+
+/* Light mode variant */
+@media (prefers-color-scheme: light) {
+  .tutorCard {
+    background: linear-gradient(135deg, rgba(139, 197, 255, 0.08) 0%, rgba(196, 181, 253, 0.05) 100%);
+    border-color: rgba(139, 197, 255, 0.2);
+  }
+  
+  .tutorCard:hover {
+    background: linear-gradient(135deg, rgba(139, 197, 255, 0.12) 0%, rgba(196, 181, 253, 0.08) 100%);
+    border-color: rgba(139, 197, 255, 0.3);
+  }
+  
+  .creator {
+    color: rgb(30, 41, 59);
+  }
+  
+  .email {
+    color: rgb(100, 116, 139);
+  }
+  
+  .date {
+    color: rgba(139, 92, 246, 0.7);
+  }
+  
+  .icon {
+    background: linear-gradient(135deg, rgba(139, 197, 255, 0.25) 0%, rgba(196, 181, 253, 0.2) 100%);
+    border-color: rgba(139, 197, 255, 0.35);
+  }
+  
+  .icon:hover {
+    background: linear-gradient(135deg, rgba(139, 197, 255, 0.35) 0%, rgba(196, 181, 253, 0.3) 100%);
+    border-color: rgba(139, 197, 255, 0.5);
+  }
+  
+  .scheduleBtn {
+    background: linear-gradient(135deg, rgba(139, 197, 255, 0.15) 0%, rgba(196, 181, 253, 0.12) 100%);
+    border-color: rgba(139, 197, 255, 0.25);
+    color: rgb(30, 41, 59);
+  }
+  
+  .scheduleBtn:hover {
+    background: linear-gradient(135deg, rgba(139, 197, 255, 0.25) 0%, rgba(196, 181, 253, 0.2) 100%);
+    border-color: rgba(139, 197, 255, 0.4);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .tutorCard {
+    padding: 12px;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .right {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .scheduleBtn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .icon {
+    height: 40px;
+  }
+  
+  .creator {
+    font-size: 15px;
+  }
+  
+  .email {
+    font-size: 12px;
+  }
+  
+  .date {
+    font-size: 10px;
+  }
+}
+
+.cont{
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 5px;
+  margin-top: 20px;
+
+}
+
+.tutorCard .addInfo{
+  display: block;
+  color: rgb(240, 245, 250);
+  font-family: satoshi;
+  font-weight: 500;
+
+}
+
+
+.courseIcon {
+  width: 20px;
+  height: 20px;
+  color: rgba(177, 203, 255, 0.918);
+  flex-shrink: 0;
+  
+}
+
+/* .tutorCard .addInfo::after{
+  content: "";
+  width: 40px;
+  height: 2px;
+  background-color: white;
+} */
+
+.courseScroller {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 4px 12px 4px;
+  margin: 5px -4px; 
+  
+  /* Custom scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 197, 255, 0.3) transparent;
+}
+
+.courseScroller::-webkit-scrollbar {
+  height: 6px;
+}
+
+.courseScroller::-webkit-scrollbar-track {
+  background: rgba(139, 197, 255, 0.1);
+  border-radius: 3px;
+}
+
+.courseScroller::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, rgba(139, 197, 255, 0.4) 0%, rgba(196, 181, 253, 0.3) 100%);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.courseScroller::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, rgba(139, 197, 255, 0.6) 0%, rgba(196, 181, 253, 0.5) 100%);
+}
+
+/* Ensure course items don't shrink */
+.courseScroller > * {
+  flex-shrink: 0;
+  width: 240px; /* Fixed width for consistent sizing */
+  height: 180px; /* Updated height to match new compact course height */
+}
+
+/* Add smooth scroll behavior */
+.courseScroller {
+  scroll-behavior: smooth;
+}
+
+/* Light mode adjustments */
+@media (prefers-color-scheme: light) {
+  .addInfo {
+    color: rgb(30, 41, 59);
+  }
+  
+  .courseScroller::-webkit-scrollbar-track {
+    background: rgba(139, 197, 255, 0.08);
+  }
+  
+  .courseScroller::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, rgba(139, 197, 255, 0.3) 0%, rgba(196, 181, 253, 0.25) 100%);
+  }
+  
+  .courseScroller::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, rgba(139, 197, 255, 0.5) 0%, rgba(196, 181, 253, 0.4) 100%);
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .courseScroller > * {
+    width: 200px;
+    height: 160px;
+  }
+  
+  .courseScroller {
+    gap: 8px;
+  }
+  
+  .addInfo {
+    font-size: 13px;
+  }
+}

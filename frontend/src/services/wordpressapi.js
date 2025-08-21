@@ -75,7 +75,28 @@ export const fetchCourseTopics = async(courseId) => {
   return topics
 }
 
-// Simple function to fetch all LearnPress courses
+export const fetchAuthorInfo = async(authorId) => {
+  const APIkey = API;
+  const secretKey = secret; // You need to get this from Tutor LMS
+  
+  const credentials = btoa(`${APIkey}:${secretKey}`);
+  const response = await fetch(`https://wordpress-1494981-5707436.cloudwaysapps.com/wp-json/tutor/v1/author-information/${authorId}`, {
+    headers:{
+      'Authorization': `Basic ${credentials}`,
+      'Content-Type': 'application/json'
+    }
+  })
+
+  if (!response.ok){
+    throw new Error("failed to fetch author info", response.status )
+  } else {
+    console.log('IT WORKS HERE!@')
+  }
+
+  const info = await response.json()
+  return info
+}
+
 
 
 

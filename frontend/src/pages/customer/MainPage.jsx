@@ -12,15 +12,19 @@ import { decodeHtmlEntities } from "../../services/helpers";
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../../hooks/useUserContext';
 import WelcomeModal from "../../components/WelcomeModal";
+// import { fetchUsers } from "../../services/wordpressapi";
+import { fetchAuthorInfo } from "../../services/wordpressapi";
 
 function MainPage() {
-  const { courseList, loading } = useCourses();
+  const { courseList, loading, users } = useCourses();
   const [showLoader, setShowLoader] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [categoryResults, setCategoryResults] = useState([]);
+  const [category, setCategory] = useState(null);
   const navigate = useNavigate();
   
   // Track if we've already shown the modal for this session
@@ -114,11 +118,37 @@ function MainPage() {
     setShowWelcomeModal(true);
   };
 
+  const getCourseTags = (course) => {
+    if (course?.course_tag && course.course_tag.length > 0){
+      const tags = course.course_tag.map(course => course.slug)
+      return tags
+    }
+  }
+
+  const handleSelect = (category) => {
+    console.log('Selected category:', category);
+    setCategory(category);
+    setIsSearching(true)
+    try{
+      courseList.forEach(course => console.log(getCourseTags(course)))
+      const filteredCourses = courseList.filter(course => getCourseTags(course).includes(category));
+      setCategoryResults(filteredCourses);
+      console.log(filteredCourses)
+
+    } catch (error) {
+      console.error('Error filtering courses by category:', error);
+    } finally{
+      setIsSearching(false)
+    }
+
+  }
+
   // Clear any errors when component mounts
   useEffect(() => {
     if (error) {
       clearError();
     }
+    console.log('Error cleared:', error);
   }, [error, clearError]);
 
   useEffect(() => {
@@ -129,6 +159,25 @@ function MainPage() {
       }, 500);
     }
   }, [loading]);
+
+  const getAuthorInfo = async(id) => {
+    try{
+      const response = await fetchAuthorInfo(id);
+      console.log('AUTHOR INFO', response.data.courses)
+      return response || null
+    } catch (error){
+      console.log('error with author info', error)
+    }
+  }
+
+  // useEffect(()=>{
+  //   const getUsers = async()=>{
+  //     let response = await fetchUsers();
+  //     return response
+  //   }
+  //   console.log("HEREHEHRHEHEHREHRHE RIGHT HERE!")
+  //   console.log(getUsers())
+  // }, [])
 
   // Show loader while courses are loading
   if (showLoader) {
@@ -142,12 +191,23 @@ function MainPage() {
     );
   }
 
-  const coursesToDisplay = searchTerm ? searchResults : courseList;
+  let coursesToDisplay = searchTerm ? searchResults : courseList;
+  coursesToDisplay = category ? categoryResults : courseList;
+  const usersMap = courseList.map(course => course.post_author);
+  console.log('USERS MAP: ', usersMap)
+  // let uniqueUsers = new Map();
+  // usersMap.forEach(user => uniqueUsers.set(user.ID, user))
+  // uniqueUsers = Array.from(uniqueUsers.values())
 
+  console.log('USERS RIGHT HERE.', users)
+  getAuthorInfo(users[0].ID)
+
+
+  console.log('Courses to display:', coursesToDisplay);
   return (
     <>
       <NavBar onSearch={handleSearch} />
-      <Sidebar />
+      <Sidebar onSelectCategory={handleSelect}/>
       
       {/* Welcome Modal - Only shows on fresh sign-in */}
       <WelcomeModal

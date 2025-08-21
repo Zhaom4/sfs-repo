@@ -160,6 +160,12 @@ export default function CoursePage() {
     return "Existential";
   };
 
+  const getCourseTags = () => {
+    if (course?.course_tag && course.course_tag.length > 0){
+      const tags = course.course_tag.map(tag => prettierWord(tag.name));
+      return tags; 
+    }
+  }
   // Helper function to get course level with proper formatting
   const getCourseLevel = () => {
     if (courseDetails?.course_level && courseDetails.course_level.length > 0) {
@@ -191,6 +197,7 @@ export default function CoursePage() {
   }
 
   const buttonConfig = getButtonConfig();
+  console.log('Course tags:', getCourseTags());
 
   return (
     <div className={styles.container}>
@@ -203,9 +210,13 @@ export default function CoursePage() {
           <div className={styles.leftContent}>
             <div className={styles.courseInfo}>
               <div className={styles.courseTags}>
-                <span className={`${styles.tag} ${styles.tagProgramming}`}>
-                  {getCourseCategory()}
-                </span>
+                {
+                  getCourseTags()?.map(tag => (
+                    <span className={`${styles.tag} ${styles.tagProgramming}`}>
+                      {tag}
+                      </span>
+                  ))
+                }
                 <span className={`${styles.tag} ${styles.tagBeginner}`}>
                   {getCourseLevel()}
                 </span>

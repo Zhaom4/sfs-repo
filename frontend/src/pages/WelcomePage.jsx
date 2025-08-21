@@ -219,6 +219,7 @@ function WelcomePage() {
       setError(error.message);
     } else {
       console.log('Login successful!'); // Add this
+      navigate('/mainpg');
     }
   } catch (err) {
     console.log('Login exception:', err); // Add this

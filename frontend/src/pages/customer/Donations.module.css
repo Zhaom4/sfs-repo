@@ -543,3 +543,8 @@ hr{
     font-size: 2rem;
   }
 }
+
+.calendly-inline-widget{
+  height: 200px;
+  width: 200px;
+}

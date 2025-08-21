@@ -1,0 +1,191 @@
+.container {
+  padding-top: 5.5rem;
+}
+
+.widget {
+  width: 90vw;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  padding: 1rem 3rem;
+  background: rgba(139, 197, 255, 0.08);
+  border: 1px solid rgba(139, 197, 255, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin: 0rem auto;
+  transition: all 0.3s ease;
+}
+
+.widget:hover {
+  background: rgba(139, 197, 255, 0.12);
+  border-color: rgba(139, 197, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(139, 197, 255, 0.15);
+}
+
+.tutorImage {
+  flex-shrink: 0;
+  width: 300px;
+  height: 180px;
+  background-position: left;
+  background-image: url('../../images/tutor.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.header1 {
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  font-family: satoshi;
+}
+
+.header1::after {
+  content: "All tutors are verified for safe access to quality education.";
+  display: block;
+  font-size: 1rem;
+  margin-top: 0.7rem;
+  color: rgb(180, 180, 180);
+}
+
+.scrollIndicator {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem auto;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.scrollIndicator:hover {
+  opacity: 1;
+}
+
+.chevron {
+  width: 32px;
+  height: 32px;
+  color: rgb(173, 192, 255);
+  animation: bounce 2s infinite;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.chevron:hover {
+  color: rgb(158, 139, 255);
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+
+.instructorList {
+  width: 50vw;
+  padding-left: 3rem;
+  /* Make sure there's enough content to scroll */
+  min-height: 200vh;
+}
+
+.email {
+  font-size: 4rem;
+  color: white;
+}
+
+.flex {
+  margin-top: 3rem;
+  display: flex;
+  gap: 2rem;
+  position: relative;
+  /* Make sure this container is tall enough */
+  min-height: 150vh;
+}
+
+.cont1 {
+  flex: 1;
+}
+
+.dynamicCalendly {
+  flex: 1;
+  position: sticky;
+  top: 4rem; /* This is where it will stick - at the top of the viewport */
+  height: fit-content; /* Don't take full height */
+  z-index: 100;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* Remove the body height override */
+/* body {
+  height: 500vh;
+} */
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .widget {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .tutorImage {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .header1 {
+    font-size: 1.1rem;
+  }
+  
+  .chevron {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Light mode variants */
+@media (prefers-color-scheme: light) {
+  .widget {
+    background: rgba(139, 197, 255, 0.06);
+    border-color: rgba(139, 197, 255, 0.15);
+  }
+  
+  .widget:hover {
+    background: rgba(139, 197, 255, 0.1);
+  }
+  
+  .header1 {
+    color: #475569;
+  }
+  
+  .tutorImage {
+    background-color: rgba(165, 214, 255, 0.08);
+    border-color: rgba(165, 214, 255, 0.15);
+  }
+  
+  .chevron {
+    color: rgba(99, 102, 241, 0.7);
+  }
+  
+  .chevron:hover {
+    color: rgba(99, 102, 241, 1);
+  }
+  
+  .dynamicCalendly {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+}

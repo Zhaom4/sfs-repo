@@ -16,6 +16,7 @@ function NavBar({onSearch}){
     if (location.pathname === '/my-courses') return 'my-courses';
     if (location.pathname === '/favorites') return 'favorites';
     if (location.pathname === '/donate') return 'donate'
+    if (location.pathname==='/tutoring') return 'tutor'
   };
 
   const activebtn = getActiveBtn();
@@ -70,6 +71,14 @@ function NavBar({onSearch}){
           )}
           >
             donate
+          </Link>
+          <Link
+          to={'/tutoring'}
+          className={clsx(styles['nav-btn'],
+          activebtn === 'tutor' && styles['active']
+          )}
+          >
+            tutoring
           </Link>
           <Link
             className={clsx(styles["favorites"], styles["nav-btn"])}

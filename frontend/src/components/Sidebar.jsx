@@ -5,15 +5,15 @@ import ThemeToggle from "./ThemeToggle";
 import clsx from "clsx";
 
 
-const categories = ["Math", "Science", "STEM", "Arts", "AP Exams", "Languages", "History"];
+const categories = ["Math", "Science", "Art", "AP", "Language", "History", "Existential", "Programming", "Other"];
 const sortBy = ["popular", "latest", "grade"]
 
 
-function Sidebar() {
+function Sidebar({onSelectCategory}) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category === selectedCategory ? null : category);
-    // You can also trigger filtering logic here
+    onSelectCategory(category.toLowerCase());
+    console.log(category.toLowerCase())
   };
   return (
     <div className={styles["side-bar"]}>
