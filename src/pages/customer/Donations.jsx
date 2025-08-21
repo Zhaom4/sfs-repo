@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useCursor, useCursorInteractions } from '../../contexts/CursorContext';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { threshold } from 'three/src/nodes/TSL.js';
 
 gsap.registerPlugin(ScrollTrigger)
 
