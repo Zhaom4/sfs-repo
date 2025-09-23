@@ -28,11 +28,11 @@ function App() {
       }
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
+    // document.addEventListener('mousemove', handleMouseMove);
 
     // Cleanup
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      // document.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
   return (
