@@ -54,7 +54,7 @@ export const CursorProvider = ({ children }) => {
     if (cursorRef.current) {
       gsap.to(cursorRef.current, {
         ...properties,
-        duration: 20,
+        duration: properties.duration || 0.2,
         ease: properties.ease || "power2.inOut"
       });
     }
