@@ -5,7 +5,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import TextPlugin from 'gsap/TextPlugin';
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, redirect } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
@@ -118,7 +118,7 @@ function WelcomePage() {
     
     subscriptionRef.current = subscription;
 
-    window.location.href='/mainpg';
+    redirect('/mainpg');
     // Check if user is already logged in
     const checkUser = async () => {
       if (isUnmountingRef.current) return;
