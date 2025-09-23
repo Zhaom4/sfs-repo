@@ -27,7 +27,8 @@ export const CursorProvider = ({ children }) => {
         borderWidth: 0,
         borderStyle: "solid",
         borderColor: "white",
-        borderRadius: "50%"
+        borderRadius: "50%",
+        transform: "translate(-50%, -50%)"
       });
     }
 
@@ -38,7 +39,7 @@ export const CursorProvider = ({ children }) => {
           y: e.clientY,
           duration: 0.1,
           ease: "power2.out",
-          transform: 'translate(-50%, -50%)'
+          transform: "translate(-50%, -50%)"
         });
       }
     };
@@ -56,7 +57,8 @@ export const CursorProvider = ({ children }) => {
       gsap.to(cursorRef.current, {
         ...properties,
         duration: properties.duration || 0.2,
-        ease: properties.ease || "power2.inOut"
+        ease: properties.ease || "power2.inOut",
+        transform: "translate(-50%, -50%)"
       });
     }
   };
