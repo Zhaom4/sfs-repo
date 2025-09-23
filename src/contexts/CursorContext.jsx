@@ -58,7 +58,7 @@ export const CursorProvider = ({ children }) => {
         ...properties,
         duration: properties.duration || 0.2,
         ease: properties.ease || "power2.inOut",
-        transform: "translate(-50%, -50%)"
+        transform: cursorRef.current.transform
       });
     }
   };
