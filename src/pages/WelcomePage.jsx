@@ -118,8 +118,6 @@ function WelcomePage() {
     
     subscriptionRef.current = subscription;
 
-    return <Redirect to='/login'  />;
-
     // Check if user is already logged in
     const checkUser = async () => {
       if (isUnmountingRef.current) return;
@@ -127,7 +125,7 @@ function WelcomePage() {
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
         alert('I am about to xook you.');
-        navigate('/mainpg');
+        window.location.replace('/mainpg');
       }
     };
     checkUser();
