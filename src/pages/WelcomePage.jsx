@@ -118,7 +118,7 @@ function WelcomePage() {
     
     subscriptionRef.current = subscription;
 
-    redirect('/mainpg');
+    throw redirect('/mainpg');
     // Check if user is already logged in
     const checkUser = async () => {
       if (isUnmountingRef.current) return;
