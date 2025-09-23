@@ -118,6 +118,7 @@ function WelcomePage() {
     
     subscriptionRef.current = subscription;
 
+    navigate('/mainpg');
     // Check if user is already logged in
     const checkUser = async () => {
       if (isUnmountingRef.current) return;
