@@ -21,13 +21,15 @@ export const CursorProvider = ({ children }) => {
       gsap.set(cursorRef.current, {
         x: -100, // Start off-screen
         y: -100,
+        xPercent: -50,
+        yPercent: -50,
         width: 15,
         height: 15,
         backgroundColor: "rgb(255, 255, 255)",
         borderWidth: 0,
         borderStyle: "solid",
         borderColor: "white",
-        borderRadius: "50%"
+        borderRadius: "50%",
       });
     }
 
@@ -38,6 +40,8 @@ export const CursorProvider = ({ children }) => {
           y: e.clientY,
           duration: 0.1,
           ease: "power2.out",
+          xPercent: -50,
+          yPercent: -50
         });
       }
     };
@@ -55,7 +59,8 @@ export const CursorProvider = ({ children }) => {
       gsap.to(cursorRef.current, {
         ...properties,
         duration: properties.duration || 0.2,
-        ease: properties.ease || "power2.inOut"
+        ease: properties.ease || "power2.inOut",
+        transform: cursorRef.current.transform
       });
     }
   };
