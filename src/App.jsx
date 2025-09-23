@@ -23,16 +23,16 @@ function App() {
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (cursor.current) {
-        cursor.current.style.left = `${e.clientX}px`;
-        cursor.current.style.top = `${e.clientY}px`; 
+        // cursor.current.style.left = `${e.clientX}px`;
+        // cursor.current.style.top = `${e.clientY}px`; 
       }
     };
 
-    // document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', handleMouseMove);
 
     // Cleanup
     return () => {
-      // document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
   return (
