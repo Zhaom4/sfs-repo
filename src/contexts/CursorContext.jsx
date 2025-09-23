@@ -21,6 +21,8 @@ export const CursorProvider = ({ children }) => {
       gsap.set(cursorRef.current, {
         x: -100, // Start off-screen
         y: -100,
+        xPercent: -50,
+        yPercent: -50,
         width: 15,
         height: 15,
         backgroundColor: "rgb(255, 255, 255)",
@@ -28,7 +30,6 @@ export const CursorProvider = ({ children }) => {
         borderStyle: "solid",
         borderColor: "white",
         borderRadius: "50%",
-        transform: "translate(-50%, -50%)"
       });
     }
 
@@ -39,7 +40,8 @@ export const CursorProvider = ({ children }) => {
           y: e.clientY,
           duration: 0.1,
           ease: "power2.out",
-          transform: "translate(-50%, -50%)"
+          xPercent: -50,
+          yPercent: -50
         });
       }
     };
