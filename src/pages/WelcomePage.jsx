@@ -5,7 +5,8 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import TextPlugin from 'gsap/TextPlugin';
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Link, useNavigate, redirect } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { redirect } from "react-router";
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
