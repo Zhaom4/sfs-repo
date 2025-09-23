@@ -124,7 +124,8 @@ function WelcomePage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
-        navigate('/mainpg',{replace:true});
+        alert('I am about to xook you.');
+        navigate('/mainpg');
       }
     };
     checkUser();
