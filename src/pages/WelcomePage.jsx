@@ -118,14 +118,13 @@ function WelcomePage() {
     
     subscriptionRef.current = subscription;
 
-    throw redirect('/mainpg');
     // Check if user is already logged in
     const checkUser = async () => {
       if (isUnmountingRef.current) return;
       const { data: { session } } = await supabase.auth.getSession();
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
-        navigate('/mainpg');
+        throw redirect('/mainpg');
       }
     };
     checkUser();
