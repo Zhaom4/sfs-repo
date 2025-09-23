@@ -21,6 +21,7 @@ function WelcomePage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [redirect, setRedirect] = useState(false);
   
   // Refs to track animations for cleanup
   const lenisRef = useRef(null);
@@ -124,7 +125,7 @@ function WelcomePage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
-        navigate('/mainpg');
+        setRedirect(true);
       }
     };
     checkUser();
@@ -319,6 +320,7 @@ function WelcomePage() {
 
   return (
     <>
+      {redirect? <Navigate to="/mainpg" /> : null}
       <section ref={section1Ref} className="section main-content">
         <div className="left">
           <div className="t">
