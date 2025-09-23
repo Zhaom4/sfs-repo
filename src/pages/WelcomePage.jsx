@@ -6,7 +6,6 @@ import TextPlugin from 'gsap/TextPlugin';
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Link, useNavigate } from 'react-router-dom';
-import { redirect } from "react-router";
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
@@ -125,7 +124,7 @@ function WelcomePage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
-        throw redirect('/mainpg');
+        navigate('/mainpg');
       }
     };
     checkUser();
