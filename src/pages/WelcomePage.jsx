@@ -5,7 +5,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import TextPlugin from 'gsap/TextPlugin';
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
@@ -21,7 +21,6 @@ function WelcomePage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [redirect, setRedirect] = useState(false);
   
   // Refs to track animations for cleanup
   const lenisRef = useRef(null);
@@ -125,7 +124,6 @@ function WelcomePage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
-        setRedirect(true);
       }
     };
     checkUser();
@@ -320,7 +318,6 @@ function WelcomePage() {
 
   return (
     <>
-      {redirect? <Navigate to="/mainpg" /> : null}
       <section ref={section1Ref} className="section main-content">
         <div className="left">
           <div className="t">
