@@ -57,7 +57,8 @@ export const CursorProvider = ({ children }) => {
       gsap.to(cursorRef.current, {
         ...properties,
         duration: properties.duration || 0.2,
-        ease: properties.ease || "power2.inOut"
+        ease: properties.ease || "power2.inOut",
+        transform: "translate(-50%, -50%)"
       });
     }
   };
