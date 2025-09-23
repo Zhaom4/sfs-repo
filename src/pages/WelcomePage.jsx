@@ -118,7 +118,7 @@ function WelcomePage() {
     
     subscriptionRef.current = subscription;
 
-    navigate('/mainpg');
+    window.location.href='/mainpg';
     // Check if user is already logged in
     const checkUser = async () => {
       if (isUnmountingRef.current) return;
