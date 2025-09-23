@@ -125,7 +125,12 @@ function WelcomePage() {
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
         alert('I am about to xook you.');
+        try{
         navigate('/mainpg');
+        }
+        catch(e){
+          alert(e);
+        }
       }
     };
     checkUser();
