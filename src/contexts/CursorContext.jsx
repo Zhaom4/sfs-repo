@@ -56,11 +56,8 @@ export const CursorProvider = ({ children }) => {
     if (cursorRef.current) {
       gsap.to(cursorRef.current, {
         ...properties,
-        x: e.clientX,
-        y: e.clientY,
         duration: properties.duration || 0.2,
-        ease: properties.ease || "power2.inOut",
-        transform: "translate(-50%, -50%)"
+        ease: properties.ease || "power2.inOut"
       });
     }
   };
