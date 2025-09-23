@@ -27,7 +27,8 @@ export const CursorProvider = ({ children }) => {
         borderWidth: 0,
         borderStyle: "solid",
         borderColor: "white",
-        borderRadius: "50%"
+        borderRadius: "50%",
+        transform: 'translate(-50%, -50%)'
       });
     }
 
