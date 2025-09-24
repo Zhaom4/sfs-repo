@@ -15,7 +15,7 @@ function WelcomePage() {
   const section1Ref = useRef(null);
   const section2Ref = useRef(null);
   const textRef = useRef(null);
-  var navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -124,14 +124,7 @@ function WelcomePage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
-        alert('test');
-        try{
-          useNavigate()('/mainpg');
-        }
-        catch(e){
-          alert(e);
-        }
-        alert('test 2');
+        navigate('/mainpg');
       }
     };
     checkUser();
