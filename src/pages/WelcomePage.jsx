@@ -21,6 +21,7 @@ function WelcomePage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [redirect, useRedirect] = useState(false);
   
   // Refs to track animations for cleanup
   const lenisRef = useRef(null);
@@ -29,6 +30,10 @@ function WelcomePage() {
   const blinkerTlRef = useRef(null);
   const subscriptionRef = useRef(null);
   const isUnmountingRef = useRef(false);
+
+  if(redirect){
+    return "buh";
+  }
 
   useEffect(() => {
     // Initialize Lenis
@@ -124,7 +129,7 @@ function WelcomePage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
-        navigate('/mainpg');
+        setRedirect(true);
       }
     };
     checkUser();
