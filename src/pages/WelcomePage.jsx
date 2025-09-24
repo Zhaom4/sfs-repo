@@ -31,6 +31,8 @@ function WelcomePage() {
   const subscriptionRef = useRef(null);
   const isUnmountingRef = useRef(false);
 
+  return <h1>testing moremoremoremore</h1>;
+  
   if(redirect){
     return <h1>testing moremoremoremore</h1>;
   }
