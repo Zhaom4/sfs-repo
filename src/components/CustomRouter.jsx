@@ -23,10 +23,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'mainpg',
-    element: {
-            <ProtectedRoute>
-            <MainPage />
-            </ProtectedRoute>},
+    element: <ProtectedRoute> <MainPage /> </ProtectedRoute>,
   }
 ]);
 export default router;
