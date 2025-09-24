@@ -125,7 +125,12 @@ function WelcomePage() {
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
         alert('test');
-        nvaigate('/mainpg');
+        try{
+          navigate('/mainpg');
+        }
+        catch(e){
+          alert(e);
+        }
         alert('test 2');
       }
     };
