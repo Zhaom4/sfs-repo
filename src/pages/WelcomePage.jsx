@@ -126,7 +126,7 @@ function WelcomePage() {
         await createOrUpdateUserProfile(session.user);
         alert('test');
         try{
-          navigate('/mainpg');
+          useNavigate()('/mainpg');
         }
         catch(e){
           alert(e);
