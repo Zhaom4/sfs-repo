@@ -21,7 +21,7 @@ function WelcomePage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [redirect, useRedirect] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   
   // Refs to track animations for cleanup
   const lenisRef = useRef(null);
