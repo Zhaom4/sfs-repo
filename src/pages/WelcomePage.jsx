@@ -32,7 +32,7 @@ function WelcomePage() {
   const isUnmountingRef = useRef(false);
 
   if(redirect){
-    return "buh";
+    return <h1>testing moremoremoremore</h1>;
   }
 
   useEffect(() => {
