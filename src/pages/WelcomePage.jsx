@@ -15,7 +15,7 @@ function WelcomePage() {
   const section1Ref = useRef(null);
   const section2Ref = useRef(null);
   const textRef = useRef(null);
-  const navigate = useNavigate();
+  var navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -125,7 +125,8 @@ function WelcomePage() {
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
         alert('test');
-        useNavigate()('/mainpg');
+        nvaigate('/mainpg');
+        alert('test 2');
       }
     };
     checkUser();
