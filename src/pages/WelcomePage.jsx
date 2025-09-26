@@ -30,6 +30,7 @@ function WelcomePage() {
   const blinkerTlRef = useRef(null);
   const subscriptionRef = useRef(null);
   const isUnmountingRef = useRef(false);
+  const navigateRef = useRef(navigate);
 
   useEffect(() => {
     // Initialize Lenis
@@ -125,8 +126,7 @@ function WelcomePage() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session && !isUnmountingRef.current) {
         await createOrUpdateUserProfile(session.user);
-        if (isUnmountingRef.current) return;
-        setRedirect(true);
+        navigateRef('/mainpg');
       }
     };
     checkUser();
