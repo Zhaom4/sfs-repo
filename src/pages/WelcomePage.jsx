@@ -33,7 +33,8 @@ function WelcomePage() {
 
   if(redirect){
     alert("xuh");
-    return <h1>testing moremoremoremore</h1>;
+    return <h1>testing moremoremoremore</h1>
+    alert("xuh 2");
   }
 
   useEffect(() => {
