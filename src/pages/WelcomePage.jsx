@@ -31,12 +31,6 @@ function WelcomePage() {
   const subscriptionRef = useRef(null);
   const isUnmountingRef = useRef(false);
 
-  if(redirect){
-    alert("xuh");
-    return <h1>testing moremoremoremore</h1>
-    alert("xuh 2");
-  }
-
   useEffect(() => {
     // Initialize Lenis
     lenisRef.current = new Lenis({
@@ -323,7 +317,13 @@ function WelcomePage() {
       }
     }
   };
-
+  
+  if(redirect){
+    alert("xuh");
+    return <h1>testing moremoremoremore</h1>
+    alert("xuh 2");
+  }
+  
   return (
     <>
       <section ref={section1Ref} className="section main-content">
