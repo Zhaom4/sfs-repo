@@ -318,9 +318,9 @@ function WelcomePage() {
     }
   };
   
-  if(redirect){
+  if(redirect.current){
     alert("xuh");
-    return <h1>testing moremoremoremore</h1>
+    return <div>testing moremoremoremore</div>
     alert("xuh 2");
   }
   
