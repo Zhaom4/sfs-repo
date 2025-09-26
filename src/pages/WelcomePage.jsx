@@ -318,7 +318,7 @@ function WelcomePage() {
     }
   };
   
-  if(redirect.current){
+  if(redirect){
     alert("xuh");
     return <div>testing moremoremoremore</div>
     alert("xuh 2");
