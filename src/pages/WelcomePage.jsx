@@ -323,6 +323,7 @@ function WelcomePage() {
   if(redirect){
     alert("xuh");
     //return <div>testing moremoremoremore</div>
+    alert(redirect);
     alert("xuh 2");
   }
   
