@@ -322,12 +322,13 @@ function WelcomePage() {
   
   if(redirect){
     alert("xuh");
-    return <div>testing moremoremoremore</div>
+    //return <div>testing moremoremoremore</div>
     alert("xuh 2");
   }
   
   return (
     <>
+      {redirect?<div>testing</div>:null}
       <section ref={section1Ref} className="section main-content">
         <div className="left">
           <div className="t">
