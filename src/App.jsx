@@ -17,24 +17,24 @@ import Settings from './pages/customer/Settings'
 import Tutor from './pages/customer/Tutoring'
 
 function App() {
-  // const cursor = useRef();
+  const cursor = useRef();
   
   
-  // useEffect(() => {
-  //   const handleMouseMove = (e) => {
-  //     if (cursor.current) {
-  //       cursor.current.style.left = `${e.clientX}px`;
-  //       cursor.current.style.top = `${e.clientY}px`; 
-  //     }
-  //   };
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (cursor.current) {
+        cursor.current.style.left = `${e.clientX}px`;
+        cursor.current.style.top = `${e.clientY}px`; 
+      }
+    };
 
-  //   document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', handleMouseMove);
 
-  //   // Cleanup
-  //   return () => {
-  //     document.removeEventListener('mousemove', handleMouseMove);
-  //   };
-  // }, []);
+    // Cleanup
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
   return (
     <UserProvider>
     <CursorProvider>
