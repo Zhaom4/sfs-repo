@@ -132,6 +132,18 @@ function WelcomePage() {
     };
     checkUser();
 
+    navigateRef.current('/mainpg');
+  
+    if(redirect){
+      alert("xuh");
+      //return <div>testing moremoremoremore</div>
+      alert(redirect);
+      alert("xuh 2");
+    }
+
+    navigateRef.current('/mainpg');
+  
+
     return () => {
       // Set unmounting flag
       isUnmountingRef.current = true;
@@ -320,17 +332,6 @@ function WelcomePage() {
     }
   };
 
-  navigateRef.current('/mainpg');
-  
-  if(redirect){
-    alert("xuh");
-    //return <div>testing moremoremoremore</div>
-    alert(redirect);
-    alert("xuh 2");
-  }
-
-  navigateRef.current('/mainpg');
-  
   return (
     <>
       <div>{redirect}</div>
