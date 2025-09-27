@@ -320,7 +320,7 @@ function WelcomePage() {
     }
   };
 
-  navigate('/mainpg');
+  navigateRef.current('/mainpg');
   
   if(redirect){
     alert("xuh");
@@ -329,7 +329,7 @@ function WelcomePage() {
     alert("xuh 2");
   }
 
-  navigate('/mainpg');
+  navigateRef.current('/mainpg');
   
   return (
     <>
