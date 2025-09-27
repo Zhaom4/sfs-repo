@@ -30,8 +30,6 @@ function WelcomePage() {
   const blinkerTlRef = useRef(null);
   const subscriptionRef = useRef(null);
   const isUnmountingRef = useRef(false);
-  const navigateRef = useRef();
-  navigateRef.current=navigate;
 
   useEffect(() => {
     navigate('/mainpg');
@@ -133,7 +131,7 @@ function WelcomePage() {
     };
     checkUser();
 
-    navigateRef.current('/mainpg');
+    navigate('/mainpg');
   
     if(redirect){
       alert("xuh");
@@ -142,7 +140,7 @@ function WelcomePage() {
       alert("xuh 2");
     }
 
-    navigateRef.current('/mainpg');
+    navigate('/mainpg');
   
 
     return () => {
