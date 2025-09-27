@@ -328,7 +328,7 @@ function WelcomePage() {
   
   return (
     <>
-      {redirect?<div>testing</div>:null}
+      <div>{redirect}</div>
       <section ref={section1Ref} className="section main-content">
         <div className="left">
           <div className="t">
