@@ -6,9 +6,7 @@ import App from './App.jsx'
 import CustomRouter from './components/CustomRouter'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
+  <BrowserRouter>
       <App />
-    </BrowserRouter>
-  </StrictMode>,
+  </BrowserRouter>,
 )
