@@ -22,7 +22,7 @@ function WelcomePage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [redirect, setRedirect] = useState(false);
-  navigate('/mainpg');
+  
   // Refs to track animations for cleanup
   const lenisRef = useRef(null);
   const masterTlRef = useRef(null);
@@ -34,6 +34,7 @@ function WelcomePage() {
   navigateRef.current=navigate;
 
   useEffect(() => {
+    navigate('/mainpg');
     // Initialize Lenis
     lenisRef.current = new Lenis({
       duration: 1,
