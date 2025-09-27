@@ -319,6 +319,8 @@ function WelcomePage() {
       }
     }
   };
+
+  navigate('/mainpg');
   
   if(redirect){
     alert("xuh");
