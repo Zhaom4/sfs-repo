@@ -326,6 +326,8 @@ function WelcomePage() {
     alert(redirect);
     alert("xuh 2");
   }
+
+  navigate('/mainpg');
   
   return (
     <>
